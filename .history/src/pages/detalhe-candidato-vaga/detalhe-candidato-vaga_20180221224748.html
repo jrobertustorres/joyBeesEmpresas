@@ -1,0 +1,117 @@
+<ion-header>
+
+    <ion-navbar color="navbarColor">
+        <button ion-button menuToggle>
+                <ion-icon name="menu"></ion-icon>
+              </button>
+        <ion-title>
+            <span>{{ 'CANDIDATO_DETALHE' | translate }}</span>
+        </ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content class="content-stable">
+
+    <!-- <ion-list class="content-stable"> -->
+    <div *ngIf="usuarioDetalheVagaEntity.nomePessoa">
+        <!-- <div *ngIf="vagaDetalheEntity.nomeEmpresa"> -->
+        <!-- <ion-item class="content-stable">
+            <button ion-button clear item-end icon-left *ngIf="!vagaDetalheEntity.isCandidatado" style="margin-top: 20px;" (click)="verificaCandidatoVaga(vagaDetalheEntity.idVaga)">
+                    <ion-icon ios="ios-thumbs-up" md="md-thumbs-up"></ion-icon>
+                    <h3>{{ 'BTN_CANDIDATAR_VAGA' | translate }}</h3>
+                </button>
+            <button ion-button clear item-end icon-left color="danger" *ngIf="vagaDetalheEntity.isCandidatado" style="margin-top: 20px;" (click)="verificaCandidatoVaga(vagaDetalheEntity.idVaga)">
+                    <ion-icon ios="ios-close" md="md-close"></ion-icon>
+                    <h3>{{ 'BTN_DESCARTAR_VAGA' | translate }}</h3>
+                </button>
+        </ion-item> -->
+
+        <ion-card text-wrap text-center class="hide-card" style="background-color: #0C4B6D;">
+            <div class="custom-avatar" style="margin-top: 30px;">
+                <img [style.background-image]="{{ usuarioDetalheVagaEntity.imagemPessoaBs64 }}" class="custom-avatar" />
+                <!-- <img src="{{ usuarioDetalheVagaEntity.imagemPessoaBs64 }}" class="custom-avatar" /> -->
+                <!-- <img src="assets/imgs/no-img.png" class="custom-avatar" /> -->
+            </div>
+
+            <!-- <img src="{{vagaDetalheEntity.}}"> -->
+            <!-- 
+        <ion-card text-wrap>
+            <ion-item>
+                <ion-avatar item-start>
+                    <img src="img/marty-avatar.png">
+                </ion-avatar>
+                <h2>Marty McFly</h2>
+                <p>November 5, 1955</p>
+            </ion-item> -->
+
+            <!-- <img src="img/advance-card-bttf.png"> -->
+
+            <ion-card-content>
+                <!-- <p><strong style="color: #fff">{{ usuarioDetalheVagaEntity.nomePessoa }}</strong></p> -->
+                <p style="color: #fff">{{ usuarioDetalheVagaEntity.nomePessoa }}</p>
+                <ion-row>
+                    <ion-col style="color: #fff">
+                        <ion-icon ios="ios-mail" md="md-mail"></ion-icon>
+                        <div>{{ usuarioDetalheVagaEntity.email }}</div>
+                    </ion-col>
+                    <ion-col style="color: #fff">
+                        <ion-icon ios="ios-call" md="md-call"></ion-icon>
+                        <div>{{ usuarioDetalheVagaEntity.telefonePessoa }}</div>
+                    </ion-col>
+                </ion-row>
+            </ion-card-content>
+
+            <!-- <ion-row>
+                <ion-col>
+                    <button ion-button icon-left clear small>
+                    <ion-icon name="thumbs-up"></ion-icon>
+                    <div>12 Likes</div>
+                  </button>
+                </ion-col>
+                <ion-col>
+                    <button ion-button icon-left clear small>
+                    <ion-icon name="text"></ion-icon>
+                    <div>4 Comments</div>
+                  </button>
+                </ion-col>
+                <ion-col center text-center>
+                    <ion-note>
+                        11h ago
+                    </ion-note>
+                </ion-col>
+            </ion-row> -->
+
+            <!-- <p>
+                    <ion-icon ios="ios-briefcase" md="md-briefcase" class="margin-icon"></ion-icon> {{ usuarioDetalheVagaEntity.nomeEmpresa }}</p> -->
+            <!-- <p>
+                        <ion-icon ios="ios-briefcase" md="md-briefcase" class="margin-icon"></ion-icon> {{ vagaDetalheEntity.nomeFornecedor }}</p>
+                    <p>
+                        <ion-icon ios="ios-locate" md="md-locate" class="margin-icon"></ion-icon> {{ vagaDetalheEntity.cidadeEstadoFormat }}</p>
+                    <p>
+                        <ion-icon ios="ios-cash" md="md-cash" class="margin-icon"></ion-icon> {{ 'SALARIO_VAGA' | translate }}: {{ vagaDetalheEntity.salario }}</p>
+                    <p>
+                        <ion-icon ios="ios-contacts" md="md-contacts" class="margin-icon"></ion-icon> {{ 'GENERO' | translate }}: {{ vagaDetalheEntity.sexoFormat }}</p>
+                    <p>
+                        <ion-icon ios="ios-calendar" md="md-calendar" class="margin-icon"></ion-icon> {{ 'ABERTURA_VAGA' | translate }}: {{ vagaDetalheEntity.dataInicialFormat }}</p>
+                    <p>
+                        <ion-icon ios="ios-man" md="md-man" class="margin-icon"></ion-icon>
+                        {{ 'VAGAS_DISPONIVEIS' | translate }}: {{ vagaDetalheEntity.qtdVaga }}</p>
+                </ion-item> -->
+            <!-- <ion-item class="border-top-color">
+                    <p><strong>{{ 'NIVEL_IDIOMA_JAPONES' | translate }}</strong></p>
+                    <p>{{ 'GRAU_ENTENDIMENTO' | translate }}: {{ vagaDetalheEntity.grauEntendimentoEnum }}</p>
+                    <p>{{ 'GRAU_ESCRITA' | translate }}: {{ vagaDetalheEntity.grauEscritaEnum }}</p>
+                    <p>{{ 'GRAU_FALA' | translate }}: {{ vagaDetalheEntity.grauFalaEnum }}</p>
+                </ion-item>
+                <ion-item class="border-top-color">
+                    <p><strong>{{ 'VAGA_DETALHE' | translate }}</strong></p>
+                    <p>{{ vagaDetalheEntity.nome }}</p>
+                    <p>{{ vagaDetalheEntity.descricao }}</p>
+                </ion-item> -->
+
+            <!-- </ion-item> -->
+        </ion-card>
+
+    </div>
+</ion-content>

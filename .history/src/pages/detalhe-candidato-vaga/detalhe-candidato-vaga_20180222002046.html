@@ -1,0 +1,89 @@
+<ion-header>
+
+    <ion-navbar color="navbarColor">
+        <button ion-button menuToggle>
+                <ion-icon name="menu"></ion-icon>
+              </button>
+        <ion-title>
+            <span>{{ 'CANDIDATO_DETALHE' | translate }}</span>
+        </ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content class="content-stable">
+
+    <!-- <ion-list class="content-stable"> -->
+    <div *ngIf="usuarioDetalheVagaEntity.nomePessoa">
+        <!-- <div *ngIf="vagaDetalheEntity.nomeEmpresa"> -->
+        <!-- <ion-item class="content-stable">
+            <button ion-button clear item-end icon-left *ngIf="!vagaDetalheEntity.isCandidatado" style="margin-top: 20px;" (click)="verificaCandidatoVaga(vagaDetalheEntity.idVaga)">
+                    <ion-icon ios="ios-thumbs-up" md="md-thumbs-up"></ion-icon>
+                    <h3>{{ 'BTN_CANDIDATAR_VAGA' | translate }}</h3>
+                </button>
+            <button ion-button clear item-end icon-left color="danger" *ngIf="vagaDetalheEntity.isCandidatado" style="margin-top: 20px;" (click)="verificaCandidatoVaga(vagaDetalheEntity.idVaga)">
+                    <ion-icon ios="ios-close" md="md-close"></ion-icon>
+                    <h3>{{ 'BTN_DESCARTAR_VAGA' | translate }}</h3>
+                </button>
+        </ion-item> -->
+
+        <ion-card text-wrap text-center class="hide-card" style="background-color: #0C4B6D;">
+            <div class="custom-avatar" style="margin-top: 30px;">
+                <!-- <img [src]="sanitizer.bypassSecurityTrustUrl(usuarioDetalheVagaEntity.imagemPessoaBs64)" class="custom-avatar" /> -->
+                <img [style.background-image]="usuarioDetalheVagaEntity.imagemPessoaBs64" class="custom-avatar" />
+                <!-- <img src="{{usuarioDetalheVagaEntity.imagemPessoaBs64}}" class="custom-avatar" /> -->
+                <!-- <img [src]="image" class="custom-avatar" /> -->
+            </div>
+
+            <ion-card-content>
+                <p style="color: #fff">{{ usuarioDetalheVagaEntity.nomeVaga }}</p>
+                <p style="color: #fff">{{ usuarioDetalheVagaEntity.nomePessoa }}</p>
+                <ion-row>
+                    <ion-col style="color: #fff">
+
+                        <div>
+                            <ion-icon ios="ios-mail" md="md-mail"></ion-icon> {{ usuarioDetalheVagaEntity.email }}</div>
+                    </ion-col>
+                </ion-row>
+
+                <ion-row>
+                    <ion-col style="color: #fff">
+
+                        <div>
+                            <ion-icon ios="ios-call" md="md-call"></ion-icon> {{ usuarioDetalheVagaEntity.telefonePessoa }}</div>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col style="color: #fff">
+
+                        <div>
+                            <ion-icon ios="ios-call" md="md-call"></ion-icon> {{ usuarioDetalheVagaEntity.telefonePessoa2 }}</div>
+                    </ion-col>
+                </ion-row>
+            </ion-card-content>
+
+        </ion-card>
+
+        <ion-card text-wrap>
+            <ion-card-content>
+                <p *ngIf="usuarioDetalheVagaEntity.genero == 'FEMININO'">
+                    <ion-icon ios="ios-female" md="md-female" class="icon-card-color"></ion-icon> {{ 'GENERO' | translate }}: {{ usuarioDetalheVagaEntity.genero }}</p>
+                <p *ngIf="usuarioDetalheVagaEntity.genero == 'MASCULINO'">
+                    <ion-icon ios="ios-male" md="md-male" class="icon-card-color"></ion-icon> {{ 'GENERO' | translate }}: {{ usuarioDetalheVagaEntity.genero }}</p>
+                <p>
+                    <ion-icon ios="ios-star" md="md-star" class="icon-card-color"></ion-icon> {{ 'IDADE' | translate }}: {{ usuarioDetalheVagaEntity.idade }}</p>
+                <p>
+                    <ion-icon ios="ios-globe" md="md-globe" class="icon-card-color"></ion-icon> {{ 'NACIONALIDADE' | translate }}: {{ usuarioDetalheVagaEntity.nacionalidade }}</p>
+                <p>
+                    <ion-icon ios="ios-pin" md="md-pin" class="icon-card-color"></ion-icon> {{ 'ENDERECO' | translate }}: {{ usuarioDetalheVagaEntity.endereco }}</p>
+                <!-- <p class="border-top-color"> -->
+                <div>
+                    <hr style="border: 0.5px solid #999;">
+                    <p style="margin-top: 10px;">
+                        <ion-icon ios="ios-book" md="md-book" class="icon-card-color"></ion-icon> {{ 'EXPERIENCIA_PROFISSIONAL' | translate }}: {{ usuarioDetalheVagaEntity.experienciaProfissional }}</p>
+                </div>
+            </ion-card-content>
+        </ion-card>
+
+    </div>
+</ion-content>

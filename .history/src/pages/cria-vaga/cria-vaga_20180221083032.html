@@ -1,0 +1,157 @@
+<ion-header>
+
+    <ion-navbar color="navbarColor">
+        <ion-title>{{ 'ANUNCIAR_VAGA' | translate }}</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <form [formGroup]="criaVagaForm" (ngSubmit)="submeterVaga()">
+
+        <ion-item-divider class="item-divider-style" style="margin-top: 0px;">
+            {{ 'DADOS_VAGA' | translate }}
+            <div item-content>
+                <ion-icon ios="ios-person" md="md-person" item-start></ion-icon>
+            </div>
+        </ion-item-divider>
+
+        <ion-item>
+            <ion-label class="my-label">{{ 'EMPRESA' | translate }}</ion-label>
+            <ion-select formControlName="idEmpresa" [(ngModel)]="vagaDetalheEntity.idEmpresa" class="font-size-select capitalize-enum" cancelText="{{ 'CANCELAR' | translate }}">
+                <ion-option value="1">EMPRESA 1</ion-option>
+                <ion-option value="2">EMPRESA 2</ion-option>
+            </ion-select>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('idEmpresa').valid && criaVagaForm.get('idEmpresa').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+
+
+        <ion-item>
+            <ion-label stacked>{{ 'NOME_VAGA' | translate }}</ion-label>
+            <ion-input formControlName="nome" [(ngModel)]="vagaDetalheEntity.nome" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('nome').valid && criaVagaForm.get('nome').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+        <div *ngIf="criaVagaForm.get('nome').hasError('maxlength')" [ngClass]="'class-error-form'">{{ 'MAX_100_CARACTERES' | translate }}</div>
+
+        <ion-item>
+            <ion-label stacked>{{ 'DESCRICAO_VAGA' | translate }}</ion-label>
+            <ion-textarea formControlName="descricao" [(ngModel)]="vagaDetalheEntity.descricao" rows="5" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-textarea>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('descricao').valid && criaVagaForm.get('descricao').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+        <div *ngIf="criaVagaForm.get('descricao').hasError('maxlength')" [ngClass]="'class-error-form'">{{ 'MAX_500_CARACTERES' | translate }}</div>
+
+        <!-- <ion-item>
+            <ion-label stacked>{{ 'DESCRICAO_VAGA' | translate }}</ion-label>
+            <ion-input formControlName="descricao" [(ngModel)]="vagaDetalheEntity.descricao" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('descricao').valid && criaVagaForm.get('descricao').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+        <div *ngIf="criaVagaForm.get('descricao').hasError('maxlength')" [ngClass]="'class-error-form'">{{ 'MAX_100_CARACTERES' | translate }}</div> -->
+
+        <ion-item>
+            <ion-label stacked>{{ 'DATA_FINAL_VAGA' | translate }}</ion-label>
+            <ion-input formControlName="dataFinal" [(ngModel)]="vagaDetalheEntity.dataFinal" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('dataFinal').valid && criaVagaForm.get('dataFinal').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+        <div *ngIf="criaVagaForm.get('dataFinal').hasError('maxlength')" [ngClass]="'class-error-form'">{{ 'MAX_100_CARACTERES' | translate }}</div>
+
+        <ion-item>
+            <ion-label stacked>{{ 'QUANTIDADE_VAGAS' | translate }}</ion-label>
+            <ion-input formControlName="qtdVaga" [(ngModel)]="vagaDetalheEntity.qtdVaga" type="number" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('qtdVaga').valid && criaVagaForm.get('qtdVaga').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+
+        <ion-item>
+            <ion-label stacked>{{ 'SALARIO_OFERECIDO' | translate }}</ion-label>
+            <ion-input formControlName="salario" [(ngModel)]="vagaDetalheEntity.salario" rows="5" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+        </ion-item>
+
+        <ion-item>
+            <ion-label class="my-label">{{ 'GENERO' | translate }}</ion-label>
+            <ion-select formControlName="genero" [(ngModel)]="vagaDetalheEntity.genero" class="font-size-select capitalize-enum" cancelText="{{ 'CANCELAR' | translate }}">
+                <ion-option value="FEMININO">{{ 'FEMININO' | translate }}</ion-option>
+                <ion-option value="MASCULINO">{{ 'MASCULINO' | translate }}</ion-option>
+            </ion-select>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('genero').valid && criaVagaForm.get('genero').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+
+
+        <!-- <ion-item>
+            <ion-label stacked>{{ 'NACIONALIDADE' | translate }}</ion-label>
+            <ion-input formControlName="nacionalidade" [(ngModel)]="vagaDetalheEntity.nacionalidade" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('nacionalidade').valid && criaVagaForm.get('nacionalidade').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+        <div *ngIf="criaVagaForm.get('nacionalidade').hasError('maxlength')" [ngClass]="'class-error-form'">{{ 'MAX_100_CARACTERES' | translate }}</div>
+
+        <ion-item>
+            <ion-label stacked>{{ 'EXPERIENCIA_PROFISSIONAL' | translate }}</ion-label>
+            <ion-textarea formControlName="experienciaProfissional" [(ngModel)]="vagaDetalheEntity.experienciaProfissional" rows="5" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-textarea>
+        </ion-item>
+        <div *ngIf="criaVagaForm.get('experienciaProfissional').hasError('maxlength')" [ngClass]="'class-error-form'">{{ 'MAX_500_CARACTERES' | translate }}</div> -->
+
+        <ion-item-divider class="item-divider-style" style="margin-top: 10px;">
+            {{ 'DADOS_IDIOMA' | translate }}
+            <div item-content>
+                <ion-icon ios="ios-person" md="md-person" item-start></ion-icon>
+            </div>
+        </ion-item-divider>
+
+        <ion-item>
+            <ion-label class="my-label">{{ 'GRAU_ENTENDIMENTO' | translate }}</ion-label>
+            <ion-select formControlName="grauEntendimento" [(ngModel)]="vagaDetalheEntity.grauEntendimento" class="font-size-select" cancelText="{{ 'CANCELAR' | translate }}">
+                <ion-option value="NENHUM">{{ 'NENHUM' | translate }}</ion-option>
+                <ion-option value="BASICO">{{ 'BASICO' | translate }}</ion-option>
+                <ion-option value="INTERMEDIARIO">{{ 'INTERMEDIARIO' | translate }}</ion-option>
+                <ion-option value="AVANCADO">{{ 'AVANCADO' | translate }}</ion-option>
+            </ion-select>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('grauEntendimento').valid && criaVagaForm.get('grauEntendimento').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+
+        <ion-item>
+            <ion-label class="my-label">{{ 'GRAU_FALA' | translate }}</ion-label>
+            <ion-select formControlName="grauFala" [(ngModel)]="vagaDetalheEntity.grauFala" class="font-size-select" cancelText="{{ 'CANCELAR' | translate }}">
+                <ion-option value="NENHUM">{{ 'NENHUM' | translate }}</ion-option>
+                <ion-option value="BASICO">{{ 'BASICO' | translate }}</ion-option>
+                <ion-option value="INTERMEDIARIO">{{ 'INTERMEDIARIO' | translate }}</ion-option>
+                <ion-option value="AVANCADO">{{ 'AVANCADO' | translate }}</ion-option>
+            </ion-select>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('grauFala').valid && criaVagaForm.get('grauFala').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+
+        <ion-item>
+            <ion-label class="my-label">{{ 'GRAU_ESCRITA' | translate }}</ion-label>
+            <ion-select formControlName="grauEscrita" [(ngModel)]="vagaDetalheEntity.grauEscrita" class="font-size-select" cancelText="{{ 'CANCELAR' | translate }}">
+                <ion-option value="NENHUM">{{ 'NENHUM' | translate }}</ion-option>
+                <ion-option value="BASICO">{{ 'BASICO' | translate }}</ion-option>
+                <ion-option value="INTERMEDIARIO">{{ 'INTERMEDIARIO' | translate }}</ion-option>
+                <ion-option value="AVANCADO">{{ 'AVANCADO' | translate }}</ion-option>
+            </ion-select>
+        </ion-item>
+        <div *ngIf="!criaVagaForm.get('grauEscrita').valid && criaVagaForm.get('grauEscrita').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+
+        <ion-list>
+            <ion-item>
+                <ion-label stacked>{{ 'PROVINCIA' | translate }}</ion-label>
+                <ion-select formControlName="idEstado" [(ngModel)]="vagaDetalheEntity.idEstado" (ionChange)="getCidadesByEstadoUsuario(vagaDetalheEntity.idEstado)" cancelText="{{ 'CANCELAR' | translate }}">
+                    <ion-option *ngFor="let estado of estados" value="{{estado.idEstado}}">{{estado.nome}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <div *ngIf="!criaVagaForm.get('idEstado').valid && criaVagaForm.get('idEstado').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+        </ion-list>
+
+        <ion-list>
+            <ion-item>
+                <ion-label stacked>{{ 'CIDADE' | translate }}</ion-label>
+                <ion-select formControlName="idCidade" [(ngModel)]="vagaDetalheEntity.idCidade" cancelText="{{ 'CANCELAR' | translate }}">
+                    <ion-option *ngFor="let cidade of cidades" value="{{cidade.idCidade}}">{{cidade.cidade}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <div *ngIf="!criaVagaForm.get('idCidade').valid && criaVagaForm.get('idCidade').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+        </ion-list>
+
+        <div>
+            <button ion-button block type="submit" color="navbarColor" class="margin-button-save span-style-color">{{ 'BTN_ANUNCIAR_VAGA' | translate }}</button>
+        </div>
+    </form>
+
+</ion-content>

@@ -1,0 +1,22 @@
+page-principal {
+    .header-md::after,
+    .tabs-md[tabsPlacement="top"]>.tabbar::after,
+    .footer-md::before,
+    .tabs-md[tabsPlacement="bottom"]>.tabbar::before {
+        left: 0;
+        bottom: -5px;
+        background-position: left 0 top -2px;
+        position: absolute;
+        width: 0px!important;
+        height: 5px;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAHBAMAAADzDtBxAAAAD1BMV…h/TXEAAAAaSURBVAjXYxCEAgY4UIICBmMogMsgFLtAAQCNSwXZKOdPxgAAAABJRU5ErkJggg==);
+        background-repeat: repeat-x;
+        content: "";
+    }
+    .style-qtd-vagas {
+        margin-left: 5px;
+        margin-top: 50px;
+        margin-bottom: 5px;
+        color: #484848;
+    }
+}

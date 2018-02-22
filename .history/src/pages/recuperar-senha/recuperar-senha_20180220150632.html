@@ -1,0 +1,34 @@
+<ion-header>
+
+    <ion-navbar color="navbarColor">
+        <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+        <ion-title>
+            {{ 'RECUPERAR_SENHA' | translate }}
+        </ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+    <div>
+        <div style="text-align:center; margin-top: 25px;" class="show-list-numbers-and-dots">
+            <p style="color:#000000;">{{ 'INFORME_EMAIL' | translate }}</p>
+        </div>
+    </div>
+
+    <form [formGroup]="recuperarSenhaForm" (ngSubmit)="submeterRecuperarSenha()">
+
+        <ion-item>
+            <ion-label stacked>{{ 'EMAIL' | translate }}</ion-label>
+            <ion-input formControlName="login" [(ngModel)]="usuarioEntity.login" type="email" [readonly]="isReadOnly"></ion-input>
+        </ion-item>
+        <div *ngIf="(!recuperarSenhaForm.get('login').valid && recuperarSenhaForm.get('login').touched) && !recuperarSenhaForm.get('login').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+        <div *ngIf="recuperarSenhaForm.get('login').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'EMAIL_INVALIDO' | translate }}</div>
+
+
+        <button ion-button block type="submit" color="navbarColor" style="margin-top: 30px;" class="span-style-color">{{ 'ENVIAR' | translate }}</button>
+    </form>
+
+</ion-content>

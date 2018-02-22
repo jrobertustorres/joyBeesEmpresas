@@ -1,0 +1,31 @@
+<ion-header>
+
+    <ion-navbar color="navbarColor">
+        <button ion-button menuToggle>
+                    <ion-icon name="menu"></ion-icon>
+                  </button>
+        <ion-title>
+            <!-- <span>{{ 'CANDIDATOS_VAGA' | translate }}</span> -->
+            <span>Nome da vaga</span>
+        </ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content class="content-stable">
+    <div class="h2-color-cards" text-wrap padding style="margin-top: 50px;" *ngIf="vagas?.length == 0">
+        <div style="text-align: center;color: #484848;"><strong>{{ 'SEM_CANDIDATO' | translate }}</strong></div>
+        <div style="text-align: center;">
+            <ion-icon style="font-size: 30px;color: #484848;" ios="ios-sad" md="md-sad"></ion-icon>
+        </div>
+    </div>
+    <ion-list>
+        <button ion-item *ngFor="let vaga of vagas" text-wrap (click)="callDetalheCandidatoVaga(vaga.idVagaUsuario)">
+            <strong>{{ vaga.nomePessoa }}</strong>
+            <p style="color: #999 ">
+                <ion-icon ios="ios-calendar" md="md-calendar" class="margin-icon"></ion-icon>{{ 'DATA_CANDIDATURA' | translate }}: {{ vaga.dataCandidatadaFormat }}
+            </p>
+        </button>
+    </ion-list>
+
+</ion-content>
