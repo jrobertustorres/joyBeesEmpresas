@@ -1,0 +1,120 @@
+[{
+        "idEstado": "1",
+        "nome": "Aichi"
+    },
+    {
+        "idEstado": "2",
+        "nome": "Akita"
+    },
+    {
+        "idEstado": "3",
+        "nome": "Aomori"
+    },
+    {
+        "idEstado": "4",
+        "nome": "Chiba"
+    },
+    {
+        "idEstado": "5",
+        "nome": "Ehime"
+    },
+    {
+        "idEstado": "6",
+        "nome": "Fukui"
+    },
+    {
+        "idEstado": "7",
+        "nome": "Fukuoka"
+    },
+    {
+        "idEstado": "8",
+        "nome": "Fukushima"
+    },
+    {
+        "idEstado": "9",
+        "nome": "Gifu"
+    },
+    {
+        "idEstado": "10",
+        "nome": "Gunma"
+    },
+    {
+        "idEstado": "11",
+        "nome": "Hiroshima"
+    },
+    {
+        "idEstado": "12",
+        "nome": "Hokkaido"
+    },
+    {
+        "idEstado": "13",
+        "nome": "Hyogo"
+    },
+    {
+        "idEstado": "14",
+        "nome": "Ibaraki"
+    },
+    {
+        "idEstado": "15",
+        "nome": "Ishikawa"
+    },
+    {
+        "idEstado": "16",
+        "nome": "Iwate"
+    },
+    {
+        "idEstado": "17",
+        "sigla": "PE",
+        "nome": "Pernambuco"
+    },
+    {
+        "idEstado": "18",
+        "sigla": "PI",
+        "nome": "Piauí"
+    },
+    {
+        "idEstado": "19",
+        "sigla": "RJ",
+        "nome": "Rio de Janeiro"
+    },
+    {
+        "idEstado": "20",
+        "sigla": "RN",
+        "nome": "Rio Grande do Norte"
+    },
+    {
+        "idEstado": "21",
+        "sigla": "RS",
+        "nome": "Rio Grande do Sul"
+    },
+    {
+        "idEstado": "22",
+        "sigla": "RO",
+        "nome": "Rondônia"
+    },
+    {
+        "idEstado": "23",
+        "sigla": "RR",
+        "nome": "Roraima"
+    },
+    {
+        "idEstado": "24",
+        "sigla": "SP",
+        "nome": "São Paulo"
+    },
+    {
+        "idEstado": "25",
+        "sigla": "SC",
+        "nome": "Santa Catarina"
+    },
+    {
+        "idEstado": "26",
+        "sigla": "SE",
+        "nome": "Sergipe"
+    },
+    {
+        "idEstado": "27",
+        "sigla": "TO",
+        "nome": "Tocantins"
+    }
+]

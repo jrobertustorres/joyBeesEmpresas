@@ -1,0 +1,265 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ToastController } from 'ionic-angular';
+import { Constants } from '../../app/constants';
+
+import {DomSanitizer} from '@angular/platform-browser';
+
+//I18N
+import { TranslateService } from '@ngx-translate/core';
+import { availableLanguages, sysOptions } from '../i18n/i18n-constants';
+
+//SERVICES
+import { UsuarioService } from '../../providers/usuario-service';
+import { VagaService } from '../../providers/vaga-service';
+
+//ENTITYS
+import { UsuarioDetalheVagaEntity } from '../../model/usuario-detalhe-vaga-entity';
+import { UsuarioEntity } from '../../model/usuario-entity';
+import { VagaListaEntity } from '../../model/vaga-lista-entity';
+
+//PAGES
+import { PrincipalPage } from '../principal/principal';
+// import {CandidatosVagaListPage } from '../candidatos-vaga-list/candidatos-vaga-list';
+
+@IonicPage()
+@Component({
+  selector: 'page-detalhe-candidato-vaga',
+  templateUrl: 'detalhe-candidato-vaga.html',
+})
+export class DetalheCandidatoVagaPage {
+  languages = availableLanguages;
+  selectedLanguage: any;
+  private _idioma: string;
+  private loadingDados: string;
+  private manterCandidato: string;
+  private descartarCandidato: string;
+  private finalistaCandidato: string;
+  private subTitleDescartarCandidatoVaga: string;
+  private subTitleFavoritarCandidatoVaga: string;
+  private loading: any;
+  private messagePresentToast: string;
+  private messageDescartarCandidatoToast: string;
+  private messageFinalistaCandidatoToast: string;
+  private btnCancelar: string;
+  private translate: TranslateService;
+  private usuarioEntity: UsuarioEntity;
+  private vagaListaEntity: VagaListaEntity;
+  private usuarioDetalheVagaEntity: UsuarioDetalheVagaEntity;
+  public idVagaUsuario: number;
+
+  constructor(public navCtrl: NavController, 
+              public navParams: NavParams,
+              public loadingCtrl: LoadingController,
+              public alertCtrl: AlertController,
+              private usuarioService: UsuarioService,
+              private vagaService: VagaService,
+              private sanitizer: DomSanitizer,
+              private toastCtrl: ToastController,
+              translate: TranslateService) {
+    this.translate = translate;
+    this.idVagaUsuario = navParams.get('idVagaUsuario');
+    this.usuarioEntity = new UsuarioEntity();
+    this.vagaListaEntity = new VagaListaEntity();
+    this.usuarioDetalheVagaEntity = new UsuarioDetalheVagaEntity();
+  }
+
+  ngOnInit() {
+    this.getLanguage();
+  }
+
+  ionViewDidLoad() {
+  }
+
+  presentToast() {
+    let toast = this.toastCtrl.create({
+      message: this.messagePresentToast,
+      duration: 3000,
+      position: 'bottom',
+      cssClass: "toast-success"
+    });
+
+    toast.onDidDismiss(() => {
+    });
+
+    toast.present();
+  }
+
+  getDetalheCandidatoVaga() {
+    try {
+      this.loading = this.loadingCtrl.create({
+        content: this.loadingDados
+      });
+      this.loading.present();
+
+      this.usuarioEntity = new UsuarioEntity();
+      this.usuarioEntity.idVagaUsuario = this.idVagaUsuario;
+
+      this.usuarioService.getDetalheCandidato(this.usuarioEntity)
+      .then((usuarioDetalheVagaEntityResult: UsuarioDetalheVagaEntity) => {
+        this.usuarioDetalheVagaEntity = usuarioDetalheVagaEntityResult;
+
+        console.log(this.usuarioDetalheVagaEntity);
+        
+        this.loading.dismiss();
+
+        // this.getCidadesByEstadoUsuario(dadosUsuarioDetalheResult.idEstado);
+
+    }, (err) => {
+      this.loading.dismiss();
+      this.alertCtrl.create({
+        subTitle: err.message,
+        buttons: ['OK']
+      }).present();
+    });
+
+    }catch (err){
+      if(err instanceof RangeError){
+      }
+      console.log(err);
+    }
+
+  }
+
+  verificaDescartarCandidatoVaga() {
+      let alert = this.alertCtrl.create({
+        subTitle: this.subTitleDescartarCandidatoVaga,
+        buttons: [
+          {
+            text: this.manterCandidato,
+            role: 'cancel',
+          },
+          {
+            text: this.descartarCandidato,
+            cssClass: 'btnDescartCss',
+            handler: () => {
+              this.descartarCandidatoVaga();
+            }
+          }
+        ]
+      });
+      alert.present();
+  }
+
+  verificaFavoritarCandidatoVaga() {
+      let alert = this.alertCtrl.create({
+        subTitle: this.subTitleFavoritarCandidatoVaga,
+        buttons: [
+          {
+            text: this.manterCandidato,
+            role: 'cancel',
+          },
+          {
+            text: this.finalistaCandidato,
+            cssClass: 'btnFinalistatCss',
+            handler: () => {
+              this.setFinalistaCandidatoVaga();
+            }
+          }
+        ]
+      });
+      alert.present();
+  }
+
+  descartarCandidatoVaga() {
+    try {
+      
+      this.loading = this.loadingCtrl.create({
+        content: this.loadingDados
+      });
+      this.loading.present();
+
+      this.vagaService.descartarCandidatoVagaByFornecedor(this.idVagaUsuario)
+      .then((usuarioDetalheVagaEntityResult: UsuarioDetalheVagaEntity) => {
+          this.loading.dismiss();
+          this.messagePresentToast = this.messageDescartarCandidatoToast;
+          this.presentToast();
+          setTimeout(() => {
+            this.navCtrl.setRoot(PrincipalPage);
+            // this.navCtrl.push(CandidatosVagaListPage);
+          }, 3000);
+        }, (err) => {
+          this.loading.dismiss();
+          this.alertCtrl.create({
+            subTitle: err.message,
+            buttons: ['OK']
+          }).present();
+        });
+
+    }
+    catch (err){
+      if(err instanceof RangeError){
+        console.log('out of range');
+      }
+      console.log(err);
+    }
+
+  }
+
+  setFinalistaCandidatoVaga() {
+    try {
+      
+      this.loading = this.loadingCtrl.create({
+        content: this.loadingDados
+      });
+      this.loading.present();
+
+      this.vagaService.setFinalistaCandidatoVagaByFornecedor(this.idVagaUsuario)
+        .then((vagaListaEntityResult: VagaListaEntity) => {
+          this.loading.dismiss();
+          this.messagePresentToast = this.messageFinalistaCandidatoToast;
+          this.presentToast();
+          setTimeout(() => {
+            this.navCtrl.setRoot(PrincipalPage);
+            // this.navCtrl.push(CandidatosVagaListPage);
+          }, 3000);
+        }, (err) => {
+          this.loading.dismiss();
+          this.alertCtrl.create({
+            subTitle: err.message,
+            buttons: ['OK']
+          }).present();
+        });
+
+    }
+    catch (err){
+      if(err instanceof RangeError){
+        console.log('out of range');
+      }
+      console.log(err);
+    }
+
+  }
+
+  getLanguage() {
+    this._idioma = sysOptions.systemLanguage == 'pt-br' ? 'pt-br' : 'en';
+    this.selectedLanguage = localStorage.getItem(Constants.IDIOMA_USUARIO);
+    if(!this.selectedLanguage){
+      this.selectedLanguage = this._idioma;
+    } else if(this.selectedLanguage) {
+      if (this.selectedLanguage == 'pt-br') {
+        this.loadingDados = 'Aguarde...';
+        this.manterCandidato = 'MANTER';
+        this.descartarCandidato = 'DESCARTAR';
+        this.subTitleDescartarCandidatoVaga = 'Deseja descartar este candidato?';
+        this.subTitleFavoritarCandidatoVaga = 'Deseja selecionar este candidato como finalista?';
+        this.messageDescartarCandidatoToast = 'O candidato foi descartado!';
+        this.messageFinalistaCandidatoToast = 'O candidato foi colocado como finalista!';
+        this.finalistaCandidato = 'FINALISTA';
+        this.btnCancelar = 'CANCELAR';
+      } else {
+        this.loadingDados = 'Wait...';
+        this.manterCandidato = 'KEEP';
+        this.descartarCandidato = 'DISCARD';
+        this.subTitleDescartarCandidatoVaga = 'Do you want to discard this candidate?';
+        this.subTitleFavoritarCandidatoVaga = 'Do you want to select this candidate as a finalist?';
+        this.messageDescartarCandidatoToast = 'The candidate was discarded!';
+        this.messageFinalistaCandidatoToast = 'The candidate was placed as a finalist!';
+        this.finalistaCandidato = 'FINALIST';
+        this.btnCancelar = 'CANCEL';
+      }
+    }
+    this.getDetalheCandidatoVaga();
+    this.translate.use(this.selectedLanguage);
+  }
+
+}

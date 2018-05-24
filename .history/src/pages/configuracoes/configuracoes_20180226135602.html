@@ -1,0 +1,84 @@
+<ion-header>
+
+    <ion-navbar color="navbarColor">
+        <button ion-button menuToggle>
+                <ion-icon name="menu"></ion-icon>
+            </button>
+        <ion-title>
+            {{ 'CONFIG' | translate }}
+        </ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content class="content-stable">
+
+    <!-- <ion-card>
+        <ion-card-header>
+            <p class="h2-color-cards">
+                <strong>{{ 'MINHA_AREA' | translate }}</strong>
+            </p>
+        </ion-card-header>
+
+        <ion-list>
+            <button ion-item class="border-top-color" (click)="meusDados()">
+                    <ion-icon ios="ios-person" md="md-person" item-start color="menuIconColor"></ion-icon>
+                    {{ 'MEUS_DADOS' | translate }}
+                </button>
+
+            <button ion-item (click)="minhaSenha()">
+                    <ion-icon ios="ios-lock" md="md-lock" item-start color="menuIconColor"></ion-icon>
+                    {{ 'MINHA_SENHA' | translate }}
+                </button>
+        </ion-list>
+    </ion-card> -->
+
+    <ion-card>
+        <ion-item>
+            <ion-label>
+                <p class="h2-color-cards">
+                    <strong>{{ 'SELECT_IDIOMA' | translate }}</strong>
+                </p>
+            </ion-label>
+
+            <ion-select (ionChange)="applyLanguage()" [(ngModel)]="selectedLanguage">
+                <ion-option *ngFor="let lang of languages" [value]="lang.code">{{ lang.name }}</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header>
+            <p class="h2-color-cards">
+                <strong>{{ 'TERMOS_CONDICOES' | translate }}</strong>
+            </p>
+        </ion-card-header>
+
+        <ion-list>
+            <button ion-item class="border-top-color" (click)="openModalTermos()">
+                    <ion-icon ios="ios-list-box" md="md-list-box" item-start color="menuIconColor"></ion-icon>
+                    {{ 'TERMOS_USO' | translate }}
+                </button>
+
+            <button ion-item (click)="openModalPolitica()">
+                    <ion-icon ios="ios-document" md="md-document" item-start color="menuIconColor"></ion-icon>
+                    {{ 'POLITICA_PRIVACIDADE' | translate }}
+                </button>
+        </ion-list>
+    </ion-card>
+
+    <ion-card>
+        <ion-list>
+            <button ion-item (click)="shareAnyWhere()">
+                    <ion-icon ios="ios-share" md="md-share" item-start color="menuIconColor"></ion-icon>
+                    {{ 'COMPARTILHAR_APP' | translate }}
+                </button>
+
+            <button ion-item class="border-top-color">
+                    <ion-icon ios="ios-warning" md="md-warning" item-start color="menuIconColor"></ion-icon>
+                    {{ 'REPORT_ERRO' | translate }}
+                </button>
+        </ion-list>
+    </ion-card>
+
+</ion-content>
