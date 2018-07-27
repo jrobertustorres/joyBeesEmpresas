@@ -1,0 +1,42 @@
+<ion-menu type="reveal" id="myMenu" [content]="content">
+    <ion-header style="background-color: #484848;">
+
+        <ion-card text-center class="hide-card" style="background-color: #484848;">
+            <div class="custom-avatar">
+                <img src="assets/imgs/logo_branca.png" class="custom-image" />
+            </div>
+
+            <div style="margin-top: 10px;">
+                <p>
+                    <span style="color: #FDB413">{{ nomeFornecedor }}</span>
+                </p>
+                <h2 style="color: #FDB413">{{ nomePessoa }}</h2>
+                <p style="color: #FDB413">{{ loginPessoa }}</p>
+            </div>
+            <hr>
+        </ion-card>
+
+    </ion-header>
+
+
+    <ion-content style="background-color: #424242;">
+        <ion-list style="margin-top: 7px;">
+            <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)" [class.no-click]="p.isVisible==false" style="background-color: #424242;">
+                <ion-icon [name]="p.icon" item-left item-start color="navbarColor" *ngIf='p.isVisible'></ion-icon>
+                <h4 *ngIf='p.isVisible' style="color: #FDB413">{{p.title | translate }}</h4>
+            </button>
+            <!-- 
+            <button block (click)="openCamera()">Open camera</button>
+            <button block (click)="selectFromGallery()">Select from gallery</button> -->
+
+            <ion-item menu-close ion-item color="white" (click)="logout()" class="my-position-button" style="background-color: #424242;">
+                <ion-icon ios="ios-exit" md="ios-exit" item-start color="navbarColor"></ion-icon>
+                <h4 style="color: #FDB413">{{ 'SAIR' | translate }}</h4>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+
+</ion-menu>
+
+<!-- Disable swipe-to-go-back because it's poor UX to combine STGB with side menus -->
+<ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
