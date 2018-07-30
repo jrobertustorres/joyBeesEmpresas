@@ -3,6 +3,9 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { Constants } from '../../app/constants';
 import { FormBuilder,	FormGroup, Validators } from '@angular/forms';
 import { DatePicker } from '@ionic-native/date-picker';
+import { MaskMoneyUtil } from "../../utilitarios/maskMoney";
+import {ViewChild} from '@angular/core';
+import {Content} from 'ionic-angular';
 
 // SERVICES
 import { EstadosService } from '../../providers/estados-service';
@@ -27,6 +30,8 @@ import { availableLanguages, sysOptions } from '../i18n/i18n-constants';
   templateUrl: 'cria-vaga.html',
 })
 export class CriaVagaPage {
+  @ViewChild(Content) content: Content;
+  
   public criaVagaForm: FormGroup;
   private loading = null;
   private loadingText = null;
@@ -38,16 +43,34 @@ export class CriaVagaPage {
   public dataFinal: string;
   public dataFinalFormat: string;
   // public dataFinal: Date;
-  private empresas;
+  // private empresas;
+
+  private escondeSalarioMulher: boolean; 
+  private escondeSalarioHomem: boolean; 
+
+  private btnManterVaga: string; 
+  private btnEncerrarVaga: string; 
+  private titleEncerrarVaga: string; 
+  private subTitleEncerrarVaga: string; 
 
   languages = availableLanguages;
   private translate: TranslateService;
   private messagePresentToast: string;
+  private messagePresentToastInserida: string;
+  private messagePresentToastAtualizada: string;
+  private messagePresentToastReaberta: string;
+  private messagePresentToastEncerrada: string;
+
   selectedLanguage = null;
   private _idioma: string;
   private vagaDetalheEntity: VagaDetalheEntity;
   private empresaEntity: EmpresaEntity;
   public idVaga: number;
+  public telaVagasArquivadas: boolean;
+
+  scrollToTop() {
+    this.content.scrollToTop();
+  }
 
   constructor(public navCtrl: NavController, 
               public navParams: NavParams, 
@@ -60,20 +83,28 @@ export class CriaVagaPage {
               private toastCtrl: ToastController,
               public modalCtrl: ModalController,
               private datePicker: DatePicker,
+              private maskMoney: MaskMoneyUtil,
               private ramoEmpresaService: RamoEmpresaService,
               translate: TranslateService) {
 
       this.translate = translate;
       this.idVaga = navParams.get('idVaga');
+      this.telaVagasArquivadas = navParams.get('telaVagasArquivadas');
       this.vagaDetalheEntity = new VagaDetalheEntity();
       this.empresaEntity = new EmpresaEntity();
       
     }
 
   ngOnInit() {
+    this.dataFinal = new Date().toISOString(); //TIRAR DEPOIS
     
     this.getLanguage();
-    this.getRamoEmpresa();
+    // this.getRamoEmpresa();
+    if (this.idVaga) {
+      this.getDadosByIdVaga();
+    } else {
+      this.getRamoEmpresa();
+    }
     // this.getEmpresasList();
 
     this.criaVagaForm = this.formBuilder.group({
@@ -100,13 +131,13 @@ export class CriaVagaPage {
       this.estados = dados;
     });
     
-    // if(this.idVaga) {
-    //   this.getDadosByIdVaga();
-    // }
-    
   }
 
   ionViewDidLoad() {
+    this.vagaDetalheEntity.grauEntendimentoEnum = 'NENHUM';
+    this.vagaDetalheEntity.grauFalaEnum = 'NENHUM';
+    this.vagaDetalheEntity.grauEscritaEnum = 'NENHUM';
+    this.vagaDetalheEntity.sexoEnum = 'AMBOS';
   }
 
   presentToast() {
@@ -123,15 +154,88 @@ export class CriaVagaPage {
     toast.present();
   }
 
-  // selecionaData() {
+  getValorSalarioHomem(v) {
+    this.vagaDetalheEntity.salarioHomem = this.maskMoney.maskConvert(v);
+  }
 
-  //   this.datePicker.show({
-  //     date: new Date(), 
-  //     mode: 'date'
-  //   })
-  //   .then(data => this.agendamento.data = data.toISOString());
+  getValorSalarioMulher(v) {
+    this.vagaDetalheEntity.salarioMulher = this.maskMoney.maskConvert(v);
+  }
 
-  // }
+  getGenero(genero: any) {
+    if(genero == 'AMBOS' || this.vagaDetalheEntity.sexoEnum == 'AMBOS') {
+      this.escondeSalarioMulher = false;
+      this.escondeSalarioHomem = false;
+    }
+    if(genero == 'MASCULINO' || this.vagaDetalheEntity.sexoEnum == 'MASCULINO') {
+      this.escondeSalarioMulher = true;
+      this.escondeSalarioHomem = false;
+      this.vagaDetalheEntity.salarioMulher = null;
+    } 
+    if (genero == 'FEMININO' || this.vagaDetalheEntity.sexoEnum == 'FEMININO') {
+      this.escondeSalarioMulher = false;
+      this.escondeSalarioHomem = true;
+      this.vagaDetalheEntity.salarioHomem = null;
+    }
+
+  }
+
+  formataSalario() {
+    if(this.vagaDetalheEntity.salarioHomem) {
+      let salarioHomem: any = this.vagaDetalheEntity.salarioHomem;
+      salarioHomem = parseFloat(salarioHomem).toFixed(2);
+      salarioHomem = salarioHomem.toString().split( /(?=(?:\d{3})+(?:\.|$))/g ).join( "," );
+      this.vagaDetalheEntity.salarioHomem = salarioHomem;
+    }
+    if(this.vagaDetalheEntity.salarioMulher) {
+      let salarioMulher: any = this.vagaDetalheEntity.salarioMulher;
+      salarioMulher = parseFloat(salarioMulher).toFixed(2);
+      salarioMulher = salarioMulher.toString().split( /(?=(?:\d{3})+(?:\.|$))/g ).join( "," );
+      this.vagaDetalheEntity.salarioMulher = salarioMulher;
+    }
+  }
+
+  getDadosByIdVaga() {
+    try {
+      this.loading = this.loadingCtrl.create({
+        content: this.loadingText,
+        // dismissOnPageChange: true
+      });
+      this.loading.present();
+      
+      this.vagaDetalheEntity = new VagaDetalheEntity();
+      this.vagaDetalheEntity.idVaga = this.idVaga;
+   
+      this.vagaService.findVagaDetalhe(this.vagaDetalheEntity)
+        .then((vagaDetalheEntityResult: VagaDetalheEntity) => {
+          this.vagaDetalheEntity = vagaDetalheEntityResult;
+          this.dataFinal = new Date(this.vagaDetalheEntity.dataFinal).toJSON().split('T')[0];
+
+          this.getGenero(this.vagaDetalheEntity.sexoEnum);
+          this.formataSalario();
+          console.log(this.vagaDetalheEntity);
+          
+          
+
+          // this.vagaDetalheEntity.dataFinal = new Date(this.vagaDetalheEntity.dataFinal).toJSON().split('T')[0];
+          // this.loading.dismiss();
+          this.getCidadesByEstadoUsuario(vagaDetalheEntityResult.idEstado);
+        }, (err) => {
+          this.loading.dismiss();
+          this.alertCtrl.create({
+            subTitle: err.message,
+            buttons: ['OK']
+          }).present();
+        });
+
+    }
+    catch (err){
+      if(err instanceof RangeError){
+        console.log('out of range');
+      }
+      console.log(err);
+    }
+  }
 
   public selecionaDataFinal() {
     this.datePicker.show({
@@ -147,8 +251,6 @@ export class CriaVagaPage {
       
       // this.dataFinal = dataFinal;
     }, (err) => {
-      console.log('Error occurred while getting date: ', err);
-      console.log('---------------------------------------- ', err);
     });
   }
 
@@ -179,39 +281,24 @@ export class CriaVagaPage {
         this.editaVaga();
       }
 
-      // this.vagaService
-      // .criaVaga(this.vagaDetalheEntity)
-      // .then((vagaDetalheEntityResult: VagaDetalheEntity) => {
-
-      //   this.loading.dismiss();
-      //   this.presentToast();
-      //   setTimeout(() => {
-      //     this.navCtrl.setRoot(PrincipalPage);
-      //   }, 3000);
-      // }, (err) => {
-      //   this.loading.dismiss();
-      //   this.alertCtrl.create({
-      //     subTitle: err.message,
-      //     buttons: ['OK']
-      //   }).present();
-      // });
-
     } else {
         Object.keys(this.criaVagaForm.controls).forEach(campo => {
           const controle = this.criaVagaForm.get(campo);
           controle.markAsTouched();
         })
       }
-
   }
 
   insereVaga() {
+    this.criaVagaForm.value.salarioHomem = this.criaVagaForm.value.salarioHomem.replace(",", "");
+    this.criaVagaForm.value.salarioMulher = this.criaVagaForm.value.salarioMulher.replace(",", "");
     this.vagaService
     // .criaVaga(this.vagaDetalheEntity)
     .criaVaga(this.criaVagaForm.value)
     .then((vagaDetalheEntityResult: VagaDetalheEntity) => {
 
       this.loading.dismiss();
+      this.messagePresentToast = this.messagePresentToastInserida;
       this.presentToast();
       setTimeout(() => {
         this.navCtrl.setRoot(PrincipalPage);
@@ -226,11 +313,37 @@ export class CriaVagaPage {
   }
 
   editaVaga() {
+    // this.scrollToTop();
+    this.vagaDetalheEntity.salarioHomem = this.criaVagaForm.value.salarioHomem ? this.criaVagaForm.value.salarioHomem.replace(",", "") : null;
+    this.vagaDetalheEntity.salarioMulher = this.criaVagaForm.value.salarioMulher ? this.criaVagaForm.value.salarioMulher.replace(",", "") : null;
+
     this.vagaService
     .alteraVaga(this.vagaDetalheEntity) //this.criaVagaForm.value
     .then((vagaDetalheEntityResult: VagaDetalheEntity) => {
 
       this.loading.dismiss();
+      this.messagePresentToast = this.messagePresentToastAtualizada;
+      this.presentToast();
+      setTimeout(() => {
+        // this.scrollToTop();
+        // this.navCtrl.setRoot(PrincipalPage);
+      }, 3000);
+    }, (err) => {
+      this.loading.dismiss();
+      this.alertCtrl.create({
+        subTitle: err.message,
+        buttons: ['OK']
+      }).present();
+    });
+  }
+
+  encerrarVaga(idVaga) {
+    this.vagaService
+    .fecharVaga(idVaga)
+    .then((vagaDetalheEntityResult: VagaDetalheEntity) => {
+
+      this.loading.dismiss();
+      this.messagePresentToast = this.messagePresentToastEncerrada;
       this.presentToast();
       setTimeout(() => {
         this.navCtrl.setRoot(PrincipalPage);
@@ -244,50 +357,41 @@ export class CriaVagaPage {
     });
   }
 
-  getDadosByIdVaga() {
-    try {
-      
-      this.vagaDetalheEntity = new VagaDetalheEntity();
-      this.vagaDetalheEntity.idVaga = this.idVaga;
-   
-      this.vagaService.findVagaDetalhe(this.vagaDetalheEntity)
-        .then((vagaDetalheEntityResult: VagaDetalheEntity) => {
-          this.vagaDetalheEntity = vagaDetalheEntityResult;
-          this.dataFinal = new Date(this.vagaDetalheEntity.dataFinal).toJSON().split('T')[0];
-          // this.vagaDetalheEntity.dataFinal = new Date(this.vagaDetalheEntity.dataFinal).toJSON().split('T')[0];
-          this.loading.dismiss();
-          this.getCidadesByEstadoUsuario(vagaDetalheEntityResult.idEstado);
-        }, (err) => {
-          this.loading.dismiss();
-          this.alertCtrl.create({
-            subTitle: err.message,
-            buttons: ['OK']
-          }).present();
-        });
-
-    }
-    catch (err){
-      if(err instanceof RangeError){
-        console.log('out of range');
-      }
-      console.log(err);
-    }
+  showConfirmEncerrarVaga(idVaga) {
+    const confirm = this.alertCtrl.create({
+      title: this.titleEncerrarVaga,
+      message: this.subTitleEncerrarVaga,
+      buttons: [
+        {
+          text: this.btnManterVaga,
+          handler: () => {
+          }
+        },
+        {
+          text: this.btnEncerrarVaga,
+          handler: () => {
+            this.encerrarVaga(idVaga);
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 
   getRamoEmpresa() {
     try {
 
-      this.loading = this.loadingCtrl.create({
-        content: this.loadingText,
-        dismissOnPageChange: true
-      });
-      this.loading.present();
+      if (!this.idVaga) {
+        this.loading = this.loadingCtrl.create({
+          content: this.loadingText,
+        // dismissOnPageChange: true
+        });
+        this.loading.present();
+      }
 
       this.ramoEmpresaService.findAllRamoEmpresaAtivo()
         .then((ramoEntityResult) => {
           this.ramoEmpresa = ramoEntityResult;
-
-          console.log(this.ramoEmpresa);
 
           this.loading.dismiss();
       }, (err) => {
@@ -308,20 +412,21 @@ export class CriaVagaPage {
 
   getCidadesByEstadoUsuario(idEstado) {
     try {
-      this.loadingCidades = this.loadingCtrl.create({
-        content: this.loadingCidades
-      });
-      this.loadingCidades.present();
+      // this.loadingCidades = this.loadingCtrl.create({
+      //   content: this.loadingCidades
+      // });
+      // this.loadingCidades.present();
 
       this.cidadesService
         .getCidades(idEstado)
         .then((listCidadesResult) => {
           this.cidades = listCidadesResult;
           this.criaVagaForm.controls.idCidade.enable();
-          this.loadingCidades.dismiss();
+          // this.loading.dismiss();
+          this.getRamoEmpresa();
         })
         .catch(err => {
-          this.loadingCidades.dismiss();
+          this.loading.dismiss();
           this.alertCtrl.create({
             subTitle: err.message,
             buttons: ['OK']
@@ -332,6 +437,44 @@ export class CriaVagaPage {
       }
       console.log(err);
     }
+  }
+
+  duplicarVaga() {
+    this.vagaDetalheEntity.salarioHomem = this.criaVagaForm.value.salarioHomem.replace(",", "");
+    this.vagaDetalheEntity.salarioMulher = this.criaVagaForm.value.salarioMulher.replace(",", "");
+
+    if (this.criaVagaForm.valid) {
+      this.loading = this.loadingCtrl.create({
+        content: this.loadingText
+      });
+      this.loading.present();
+
+      // this.vagaDetalheEntity = this.criaVagaForm.value;
+      this.vagaService
+      .duplicarVaga(this.vagaDetalheEntity)
+      .then((vagaDetalheEntityResult: VagaDetalheEntity) => {
+
+        this.loading.dismiss();
+        this.messagePresentToast = this.messagePresentToastReaberta;
+        this.presentToast();
+        setTimeout(() => {
+          this.navCtrl.setRoot(PrincipalPage);
+        }, 3000);
+      }, (err) => {
+        this.loading.dismiss();
+        this.alertCtrl.create({
+          subTitle: err.message,
+          buttons: ['OK']
+        }).present();
+      });
+
+    } else {
+        Object.keys(this.criaVagaForm.controls).forEach(campo => {
+          const controle = this.criaVagaForm.get(campo);
+          controle.markAsTouched();
+        })
+      }
+
   }
 
   // getEmpresasList() {
@@ -393,17 +536,33 @@ export class CriaVagaPage {
     else if(this.selectedLanguage) {
       if (this.selectedLanguage == 'pt-br') {
         this.loadingText = 'Aguarde...';
-        this.messagePresentToast = 'A vaga foi inserida!';
+        this.messagePresentToastInserida = 'A vaga foi inserida!';
+        this.messagePresentToastAtualizada = 'A vaga foi atualizada!';
+        this.messagePresentToastReaberta = 'A vaga foi reaberta!';
+        this.messagePresentToastEncerrada = 'A vaga foi encerrada!';
         this.loadingCidades = 'Buscando cidades...';
         this.loadingEmpresas = 'Buscando Empresas...';
+        this.btnManterVaga = 'MANTER';
+        this.btnEncerrarVaga = 'ENCERRAR';
+        this.titleEncerrarVaga = 'Encerrar vaga';
+        this.subTitleEncerrarVaga = 'Deseja encerrar esta vaga?';
       } else {
         this.loadingText = 'Wait...';
-        this.messagePresentToast = 'The vacancy has been inserted!';
+        // this.messagePresentToast = 'The vacancy has been inserted!';
+        this.messagePresentToastInserida = 'The vacancy has been inserted!';
+        this.messagePresentToastAtualizada = 'The vacancy has been updated!';
+        this.messagePresentToastReaberta = 'The vacancy has been restart';
+        this.messagePresentToastEncerrada = 'The vacancy has been closed';
         this.loadingCidades = 'Searching cities...';
         this.loadingEmpresas = 'Searching Company...';
+        this.btnManterVaga = 'KEEP';
+        this.btnEncerrarVaga = 'CLOSE';
+        this.titleEncerrarVaga = 'Close vacancy';
+        this.subTitleEncerrarVaga = 'Do you want to close this vacancy?';
       }
     }
     this.translate.use(this.selectedLanguage);
+    // this.getDadosByIdVaga();
   }
 
 }

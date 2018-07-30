@@ -1,0 +1,48 @@
+<ion-header>
+
+    <ion-navbar color="navbarColor">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            <span style="font-size: 14px;">{{ 'VAGAS_ARQUIVADAS' | translate }}</span>
+        </ion-title>
+
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content class="content-stable">
+    <div>
+        <ion-list>
+            <ion-refresher (ionRefresh)="doRefreshVagasArquivadas($event)" style="margin-top: -50px;">
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher>
+
+            <div class="h2-color-cards" text-wrap padding style="margin-top: 50px;" *ngIf="vagasArquivadas?.length == 0">
+                <div style="text-align: center;color: #484848;"><strong>{{ 'SEM_VAGAS_ARQUIVADAS' | translate }}</strong></div>
+                <div style="text-align: center;">
+                    <ion-icon style="font-size: 30px;color: #484848;" ios="md-sad" md="md-sad"></ion-icon>
+                </div>
+            </div>
+            <div class="style-qtd-vagas" *ngIf="vagasArquivadas?.length > 0">
+                {{ vagas?.length }} {{ 'VAGAS' | translate }}
+            </div>
+            <button ion-item *ngFor="let vaga of vagasArquivadas" text-wrap (click)="callTelaCriarVagaByIdVaga(vaga.idVaga)">
+                <strong>{{ vaga.nome }}</strong>
+                <p>{{ vaga.cidadeEstadoFormat }}</p>
+                <p style="color: #999 ">
+                    <ion-icon ios="ios-calendar" md="md-calendar"></ion-icon> {{ vaga.tempoAberto }}
+                </p>
+                <p *ngIf="vaga.dataCandidatadaFormat != null" style="color: #999">
+                    <ion-icon ios="ios-information-circle" md="md-information-circle"></ion-icon> {{ 'VAGA_JA_CANDIDATADA' | translate }}</p>
+            </button>
+        </ion-list>
+
+    </div>
+
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+</ion-content>
