@@ -1,0 +1,135 @@
+<ion-header>
+
+    <ion-navbar color="navbarColor">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            <span>{{ 'VAGAS_ABERTAS' | translate }}</span>
+        </ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only (click)="openModalFiltro()">
+                <ion-icon ios="ios-search" md="md-search"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+    <!-- <div padding>
+        <ion-segment [(ngModel)]="segment" class="background-stable" (ionChange)="selectedTabChanged($event)">
+            <ion-segment-button value="vagasAtivas" style="font-size: 11px;">
+                {{ 'VAGAS_ATIVAS' | translate }}
+                <ion-badge item-end class="badge-style">{{ qtdVagasAtivas }}</ion-badge>
+            </ion-segment-button>
+            <ion-segment-button value="vagasArquivadas" style="font-size: 11px;">
+                {{ 'VAGAS_ARQUIVADAS' | translate }}
+            </ion-segment-button>
+        </ion-segment>
+    </div> -->
+
+</ion-header>
+
+<ion-content class="content-stable">
+    <!-- <div [ngSwitch]="segment"> -->
+    <ion-refresher (ionRefresh)="doRefreshVagasAtivas($event)">
+        <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+    <div>
+
+        <!-- <ion-list *ngSwitchCase="'vagasAtivas'" style="margin-top: 50px;"> -->
+        <ion-list>
+
+            <div class="h2-color-cards" text-wrap padding style="margin-top: 50px;" *ngIf="vagasAtivas?.length == 0">
+                <div style="text-align: center;color: #484848;"><strong>{{ 'SEM_VAGAS_ATIVAS' | translate }}</strong></div>
+                <div style="text-align: center;">
+                    <ion-icon style="font-size: 30px;color: #484848;" ios="md-sad" md="md-sad"></ion-icon>
+                </div>
+            </div>
+
+            <ion-item *ngFor="let vagaAtiva of vagasAtivas" text-wrap (click)="callTelaCriarVagaByIdVaga(vagaAtiva.idVaga)">
+                <span style="font-size: 15px;"><strong>#{{ vagaAtiva.idVaga }}</strong> - <strong>{{ vagaAtiva.nome }}</strong></span>
+                <p>{{ vagaAtiva.cidadeEstadoFormat }}</p>
+                <p><strong>{{vagaAtiva.statusEnum}} - </strong> Pub.: {{ vagaAtiva.dataAberturaVagaFormat }} - {{ vagaAtiva.tempoAberto }}</p>
+                <p style="color: #999;">
+                    <ion-icon ios="ios-people" md="md-people" [ngClass]="{true:'comMargin'}[vagaAtiva.qtdCandidatado != null]">
+                        <h3 *ngIf="vagaAtiva.qtdCandidatado == null" style="color: #488AFF; float: right; margin-left: 7px;"><strong>0</strong></h3>
+                        <h3 *ngIf="vagaAtiva.qtdCandidatado != null" style="color: #488AFF; float: right; margin-left: 7px;"><strong>{{ vagaAtiva.qtdCandidatado }}</strong></h3>
+                    </ion-icon>
+
+                    <button ion-button color="secondary" outline *ngIf="vagaAtiva.qtdCandidatado != null" style="margin-top: -10px;" (click)="callCandidatosVaga(vagaAtiva.idVaga, vagaAtiva.nome);$event.stopPropagation();">
+                            {{ 'LABEL_VER_CANDIDATOS' | translate }}</button>
+                </p>
+            </ion-item>
+
+            <!-- <button ion-item *ngFor="let vagaAtiva of vagasAtivas" text-wrap (click)="callTelaCriarVagaByIdVaga(vagaAtiva.idVaga)">
+                <p>
+                        <strong>#{{ vagaAtiva.idVaga }}</strong> - <strong>{{ vagaAtiva.nome }}</strong>
+                </p>
+                <p>{{ vagaAtiva.cidadeEstadoFormat }}</p>
+                <p><strong>{{vagaAtiva.statusEnum}} - </strong> Pub.: {{ vagaAtiva.dataAberturaVagaFormat }} - {{ vagaAtiva.tempoAberto }}</p>
+
+                <p style="color: #999;">
+                        <ion-icon ios="ios-people" md="md-people" style="margin-top: 10px;">
+                            <h3 *ngIf="vagaAtiva.qtdCandidatado == null" style="color: #488AFF; float: right; margin-left: 7px;"><strong>0</strong></h3>
+                            <h3 *ngIf="vagaAtiva.qtdCandidatado != null" style="color: #488AFF; float: right; margin-left: 7px;"><strong>{{ vagaAtiva.qtdCandidatado }}</strong></h3>
+                        </ion-icon>
+
+                    <button ion-button color="secondary" outline style="margin-top: -10px;" 
+                        (click)="callCandidatosVaga(vagaAtiva.idVaga, vagaAtiva.nome);$event.stopPropagation();">
+                            VER CANDIDATOS</button>
+            </p>
+
+            </button> -->
+
+            <!-- <ion-card *ngFor="let vagaAtiva of vagasAtivas">
+                <ion-card-header>
+                    <div style="float: left">
+                        <strong>#{{ vagaAtiva.idVaga }}</strong> - <strong>{{ vagaAtiva.nome }}</strong>
+                    </div>
+                    <div style="float: right">
+                        <button ion-button icon-only (click)="presentPopover($event, vagaAtiva.idVaga)" style="float: right;
+                        background-color: transparent;
+                        color: #484848;
+                        box-shadow: none;">
+                                <ion-icon name="more"></ion-icon>
+                              </button>
+                    </div>
+                </ion-card-header>
+                <ion-card-content style="margin-top: -25px;">
+                    <p>{{ vagaAtiva.cidadeEstadoFormat }}</p>
+                    <p><strong>{{vagaAtiva.statusEnum}} - </strong> Pub.: {{ vagaAtiva.dataAberturaVagaFormat }} - {{ vagaAtiva.tempoAberto }}</p>
+
+                    <ion-row align-items-left style="margin-bottom: -15px;">
+                        <ion-col>
+                            <ion-item style="margin-left: -22px;">
+                                <button ion-button clear item-end icon-left (click)="callTelaCriarVagaByIdVaga(vagaAtiva.idVaga)">
+                                        <strong><h3 style="color: #488AFF;">{{ 'BTN_EDITAR_VAGA' | translate }}</h3></strong>
+                                    </button>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col>
+                            <ion-item style="margin-left: 15%;">
+                                <button ion-button clear item-end icon-left (click)="callCandidatosVaga(vagaAtiva.idVaga)">
+                                        <ion-icon ios="ios-people" md="md-people"></ion-icon>
+                                        <strong><h3 *ngIf="vagaAtiva.qtdCandidatado != null" style="color: #488AFF;">{{ vagaAtiva.qtdCandidatado }}</h3></strong>
+                                        <strong><h3 *ngIf="vagaAtiva.qtdCandidatado == null" style="color: #488AFF;">0</h3></strong>
+                                    </button>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+
+                </ion-card-content>
+            </ion-card> -->
+        </ion-list>
+
+    </div>
+
+    <ion-fab bottom right>
+        <button ion-fab mini (click)="callTelaCriarVaga()"><ion-icon name="add"></ion-icon></button>
+    </ion-fab>
+
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+</ion-content>
