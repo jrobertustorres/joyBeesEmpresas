@@ -44,7 +44,6 @@ export class LoginService {
 
             this.userChangeEvent.emit(data.nomePessoa);
             this.emailPessoaChangeEvent.emit(data.login);
-            this.nomeFornecedorChangeEvent.emit(data.nomeFornecedor);
             this.languageChangeEvent.emit(data.idiomaUsuario);
           }, (err) => {
             reject(err.json());
@@ -75,7 +74,6 @@ export class LoginService {
             localStorage.setItem(Constants.NOME_PESSOA, data.nomePessoa);
             localStorage.setItem(Constants.IDIOMA_USUARIO, data.idiomaUsuario);
             localStorage.setItem(Constants.TOKEN_USUARIO, data.token);
-
             this.userChangeEvent.emit(data.nomePessoa);
             this.emailPessoaChangeEvent.emit(data.login);
             this.nomeFornecedorChangeEvent.emit(data.nomeFornecedor);
