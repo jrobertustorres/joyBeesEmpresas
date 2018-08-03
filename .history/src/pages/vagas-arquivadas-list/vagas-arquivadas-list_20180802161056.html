@@ -1,0 +1,50 @@
+<ion-header>
+
+    <ion-navbar color="navbarColor">
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            <span style="font-size: 16px;">{{ 'VAGAS_ARQUIVADAS' | translate }}</span>
+        </ion-title>
+
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content class="content-stable">
+    <div>
+        <ion-list>
+            <!-- <ion-refresher (ionRefresh)="doRefreshVagasArquivadas($event)" style="margin-top: -50px;">
+                <ion-refresher-content></ion-refresher-content>
+            </ion-refresher> -->
+
+            <div class="h2-color-cards" text-wrap padding style="margin-top: 50px;" *ngIf="vagasArquivadas?.length == 0">
+                <div style="text-align: center;color: #484848;"><strong>{{ 'SEM_VAGAS_ARQUIVADAS' | translate }}</strong></div>
+                <div style="text-align: center;">
+                    <ion-icon style="font-size: 30px;color: #484848;" ios="md-sad" md="md-sad"></ion-icon>
+                </div>
+            </div>
+            <!-- <div class="style-qtd-vagas" *ngIf="vagasArquivadas?.length > 1">
+                {{ vagasArquivadas?.length }} {{ 'VAGAS' | translate }}
+            </div>
+            <div class="style-qtd-vagas" *ngIf="vagasArquivadas?.length == 1">
+                {{ vagasArquivadas?.length }} {{ 'VAGA' | translate }}
+            </div> -->
+            <button ion-item *ngFor="let vaga of vagasArquivadas" text-wrap (click)="callTelaCriarVagaByIdVaga(vaga.idVaga)">
+                <span style="font-size: 15px;"><strong>{{ vaga.nome }}</strong></span>
+                <p>{{ vaga.cidadeEstadoFormat }}</p>
+                <p>{{ 'LABEL_ENCERRADA' | translate }}Encerrada em: {{ vaga.dataEncerramentoFormat }}</p>
+                <!-- <p style="color: #999 ">
+                    <ion-icon ios="ios-calendar" md="md-calendar"></ion-icon> {{ vaga.dataEncerramentoFormat }}
+                </p> -->
+            </button>
+        </ion-list>
+
+    </div>
+
+    <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+</ion-content>
