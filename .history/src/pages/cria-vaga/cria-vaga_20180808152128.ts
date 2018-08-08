@@ -222,11 +222,9 @@ export class CriaVagaPage {
     try {
       this.loading = this.loadingCtrl.create({
         content: this.languageDictionary.LOADING_TEXT,
-        // dismissOnPageChange: true
       });
       this.loading.present();
       
-      // this.vagaDetalheEntity = new VagaDetalheEntity();
       this.vagaDetalheEntity.idVaga = this.idVaga;
    
       this.vagaService.findVagaDetalhe(this.vagaDetalheEntity)
@@ -287,7 +285,6 @@ export class CriaVagaPage {
       // this.dataFinalFormat = dataFinal.toISOString();
       this.dataFinal = dataFinal.toISOString();
       
-      // this.dataFinal = dataFinal;
     }, (err) => {
     });
   }
@@ -296,7 +293,7 @@ export class CriaVagaPage {
 
     if (this.criaVagaForm.valid) {
       this.loading = this.loadingCtrl.create({
-        content: this.languageDictionary.LOADING_TEXT
+        content: this.languageDictionary.LOADING_TEXT,
       });
       this.loading.present();
 
@@ -341,9 +338,8 @@ export class CriaVagaPage {
     });
   }
 
-  // ESTA DESABILITADO. POR ENQUANTO NÃO VAMOS DEIXAR ATUALIZAR A VAGA
+  // O BOTÃO ESTA DESABILITADO. POR ENQUANTO NÃO VAMOS DEIXAR ATUALIZAR A VAGA
   editaVaga() {
-    // this.scrollToTop();
     this.criarVagaFormat = this.vagaDetalheEntity;
     this.criarVagaFormat.salarioHomem = this.criaVagaForm.value.salarioHomem ? this.criaVagaForm.value.salarioHomem.replace(",", "") : null;
     this.criarVagaFormat.salarioMulher = this.criaVagaForm.value.salarioMulher ? this.criaVagaForm.value.salarioMulher.replace(",", "") : null;
@@ -415,7 +411,6 @@ export class CriaVagaPage {
       if (!this.idVaga) {
         this.loading = this.loadingCtrl.create({
           content: this.languageDictionary.LOADING_TEXT,
-        // dismissOnPageChange: true
         });
         this.loading.present();
       }
@@ -443,17 +438,12 @@ export class CriaVagaPage {
 
   getCidadesByEstadoUsuario(idEstado) {
     try {
-      // this.loadingCidades = this.loadingCtrl.create({
-      //   content: this.loadingCidades
-      // });
-      // this.loadingCidades.present();
 
       this.cidadesService
         .getCidades(idEstado)
         .then((listCidadesResult) => {
           this.cidades = listCidadesResult;
           this.criaVagaForm.controls.idCidade.enable();
-          // this.loading.dismiss();
           this.getRamoEmpresa();
         })
         .catch(err => {
@@ -476,7 +466,7 @@ export class CriaVagaPage {
 
     if (this.criaVagaForm.valid) {
       this.loading = this.loadingCtrl.create({
-        content: this.languageDictionary.LOADING_TEXT
+        content: this.languageDictionary.LOADING_TEXT,
       });
       this.loading.present();
 
@@ -507,93 +497,5 @@ export class CriaVagaPage {
       }
 
   }
-
-  // getEmpresasList() {
-  //   try {
-  //     // this.loadingEmpresas = this.loadingCtrl.create({
-  //     //   content: this.loadingEmpresas
-  //     // });
-  //     // this.loadingEmpresas.present();
-  //     this.loading = this.loadingCtrl.create({
-  //       content: this.loadingText
-  //     });
-  //     this.loading.present();
-
-  //     this.vagaService.getEmpresas()
-  //     .then((empresaEntityResult: EmpresaEntity) => {
-  //       this.empresas = empresaEntityResult;
-  //       if(this.idVaga) {
-  //         this.getDadosByIdVaga();
-  //       } else {
-  //         this.loading.dismiss();
-  //       } 
-
-  //       // this.loading.dismiss();
-  //   }, (err) => {
-  //     this.loading.dismiss();
-  //     this.alertCtrl.create({
-  //       subTitle: err.message,
-  //       buttons: ['OK']
-  //     }).present();
-  //   });
-
-  //     // this.vagaService
-  //     //   .getEmpresas()
-  //     //   .then((listEmpresasResult) => {
-  //     //     this.empresas = listEmpresasResult;
-  //     //     console.log(this.empresas);
-  //     //     this.loadingEmpresas.dismiss();
-  //     //   })
-  //     //   .catch(err => {
-  //     //     this.loadingEmpresas.dismiss();
-  //     //     this.alertCtrl.create({
-  //     //       subTitle: err.message,
-  //     //       buttons: ['OK']
-  //     //     }).present();
-  //     //   });
-  //   }catch (err){
-  //     if(err instanceof RangeError){
-  //     }
-  //     console.log(err);
-  //   }
-  // }
-
-  // getLanguage() {
-  //   this._idioma = sysOptions.systemLanguage == 'pt-br' ? 'pt-br' : 'en';
-  //   this.selectedLanguage = localStorage.getItem(Constants.IDIOMA_USUARIO);
-  //   if(!this.selectedLanguage){
-  //     this.selectedLanguage = this._idioma;
-  //   }
-  //   else if(this.selectedLanguage) {
-  //     if (this.selectedLanguage == 'pt-br') {
-  //       this.loadingText = 'Aguarde...';
-  //       this.messagePresentToastInserida = 'A vaga foi inserida!';
-  //       this.messagePresentToastAtualizada = 'A vaga foi atualizada!';
-  //       this.messagePresentToastReaberta = 'A vaga foi reaberta!';
-  //       this.messagePresentToastEncerrada = 'A vaga foi encerrada!';
-  //       this.loadingCidades = 'Buscando cidades...';
-  //       this.loadingEmpresas = 'Buscando Empresas...';
-  //       this.btnManterVaga = 'MANTER';
-  //       this.btnEncerrarVaga = 'ENCERRAR';
-  //       this.titleEncerrarVaga = 'Encerrar vaga';
-  //       this.subTitleEncerrarVaga = 'Deseja encerrar esta vaga?';
-  //     } else {
-  //       this.loadingText = 'Wait...';
-  //       // this.messagePresentToast = 'The vacancy has been inserted!';
-  //       this.messagePresentToastInserida = 'The vacancy has been inserted!';
-  //       this.messagePresentToastAtualizada = 'The vacancy has been updated!';
-  //       this.messagePresentToastReaberta = 'The vacancy has been restart';
-  //       this.messagePresentToastEncerrada = 'The vacancy has been closed';
-  //       this.loadingCidades = 'Searching cities...';
-  //       this.loadingEmpresas = 'Searching Company...';
-  //       this.btnManterVaga = 'KEEP';
-  //       this.btnEncerrarVaga = 'CLOSE';
-  //       this.titleEncerrarVaga = 'Close vacancy';
-  //       this.subTitleEncerrarVaga = 'Do you want to close this vacancy?';
-  //     }
-  //   }
-  //   this.translate.use(this.selectedLanguage);
-  //   // this.getDadosByIdVaga();
-  // }
 
 }
