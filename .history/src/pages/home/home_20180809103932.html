@@ -25,9 +25,8 @@
     <!-- </ion-grid> -->
 </ion-header>
 
-<!-- <ion-content style="margin-top: -65px;"> -->
-<ion-content>
-    <div style="margin-top: 210px;" class="fixed-content">
+<ion-content style="margin-top: -65px;">
+    <div style="margin-top: 280px;" class="fixed-content">
 
         <div padding>
             <!-- <ion-segment [(ngModel)]="segment" class="background-stable ion-segment-style"> -->
@@ -43,7 +42,7 @@
         </div>
 
         <div [ngSwitch]="segment">
-            <div *ngSwitchCase="'cadastrarEmpresa'">
+            <ion-list *ngSwitchCase="'cadastrarEmpresa'">
                 <div>
                     <div style="text-align:center;">
                         <p style="color:#000000;">{{ 'LABEL_INFORME_DADOS' | translate }}</p>
@@ -84,9 +83,9 @@
                     </div>
                 </form>
 
-            </div>
+            </ion-list>
 
-            <div *ngSwitchCase="'login'">
+            <ion-list *ngSwitchCase="'login'">
                 <form [formGroup]="loginForm" (ngSubmit)="submeterLogin()">
 
                     <ion-item>
@@ -111,7 +110,7 @@
                     <a (click)="goRecuperarSenha()" class="botao01">{{ 'ESQUECI_SENHA' | translate }}</a>
                 </div>
 
-            </div>
+            </ion-list>
         </div>
 
     </div>

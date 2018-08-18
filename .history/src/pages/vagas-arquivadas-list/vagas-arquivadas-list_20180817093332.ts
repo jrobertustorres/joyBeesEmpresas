@@ -65,30 +65,13 @@ export class VagasArquivadasListPage {
 
     setTimeout(() => {
 
-      if(this.vagaDetalheEntity.nome == '' || this.vagaDetalheEntity.nome == undefined) {
-        this.getVagasArquivadas();
-      } else {
-        this.filtrarPorNomeVaga(this.vagaDetalheEntity.nome);
-      }
+      this.getVagasArquivadas();
       infiniteScroll.complete();
     }, 500);
   }
 
-  onCancelFilter() {
-    this.refresh = false;
-    this.getVagasArquivadas();
-  }
-
-  onInputFilter(filtro) {
-    this.refresh = false;
-    if(filtro.srcElement.value == '') {
-      this.getVagasArquivadas();
-    }
-  }
-
   getVagasArquivadas() {
     try {
-      this.vagaDetalheEntity.nome = '';
       this.vagaDetalheEntity.limiteDados = this.vagaDetalheEntity.limiteDados ? this.vagasArquivadas.length : null;
 
       if(this.refresh == false) {
@@ -131,7 +114,7 @@ export class VagasArquivadasListPage {
       this.loading.present();
 
       console.log(filtro.srcElement.value);
-
+      
       this.vagaDetalheEntity.nome = filtro.srcElement.value;
       this.vagaService.findVagaFinalizadasFornecedorByVagaFilter(this.vagaDetalheEntity)
         .then((vagasListaEntityResult: VagaListaEntity) => {

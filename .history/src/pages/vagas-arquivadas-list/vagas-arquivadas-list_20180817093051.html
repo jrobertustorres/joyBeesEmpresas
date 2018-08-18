@@ -9,15 +9,14 @@
         </ion-title>
         <ion-buttons end>
             <button ion-button icon-only (click)="showFilter = !showFilter">
-                <ion-icon ios="ios-search" md="md-search"></ion-icon>
-            </button>
+                    <ion-icon ios="ios-search" md="md-search"></ion-icon>
+                </button>
         </ion-buttons>
     </ion-navbar>
 
 </ion-header>
 
 <ion-content class="content-stable">
-    <ion-searchbar (search)="filtrarPorNomeVaga($event)" (ionClear)="onCancelFilter($event)" (ionInput)="onInputFilter($event);" *ngIf="showFilter" placeholder="Buscar"></ion-searchbar>
     <div>
         <ion-list>
             <!-- <ion-refresher (ionRefresh)="doRefreshVagasArquivadas($event)" style="margin-top: -50px;">
