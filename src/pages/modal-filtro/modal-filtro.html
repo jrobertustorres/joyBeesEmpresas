@@ -23,19 +23,18 @@
                 </ion-select>
             </ion-item>
 
-            <!-- <span>Local</span> -->
             <ion-item style="border-top: 0.55px solid #fff;">
                 <ion-label class="my-label">{{ 'PROVINCIA' | translate }}</ion-label>
-                <ion-select formControlName="idEstado" [(ngModel)]="vagaDetalheEntity.idEstado" (ionChange)="getCidadesByEstadoPopOver(vagaDetalheEntity.idEstado)" cancelText="{{ 'CANCELAR' | translate }}">
+                <ion-select formControlName="idEstado" [(ngModel)]="vagaDetalheEntity.idEstado" style="font-size: 14px;" (ionChange)="getCidadesByEstadoPopOver(vagaDetalheEntity.idEstado)" cancelText="{{ 'CANCELAR' | translate }}">
                     <ion-option *ngFor="let estado of estados" value="{{estado.idEstado}}">{{estado.nome}}</ion-option>
                 </ion-select>
             </ion-item>
-            <!-- <div *ngIf="!filtroForm.get('idEstado').valid && filtroForm.get('idEstado').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO_PROVINCIA' | translate }}</div> -->
 
             <ion-list>
                 <ion-item>
                     <ion-label class="my-label">{{ 'CIDADE' | translate }}</ion-label>
-                    <ion-select formControlName="idCidade" [(ngModel)]="vagaDetalheEntity.idCidade" cancelText="{{ 'CANCELAR' | translate }}">
+                    <ion-select formControlName="idCidade" [(ngModel)]="vagaDetalheEntity.idCidade" style="font-size: 14px;" cancelText="{{ 'CANCELAR' | translate }}">
+                        <ion-option value="" selected="true">{{ 'LABEL_TODAS_CIDADES' | translate }}</ion-option>
                         <ion-option *ngFor="let cidade of cidades" value="{{cidade.idCidade}}">{{cidade.cidade}}</ion-option>
                     </ion-select>
                 </ion-item>

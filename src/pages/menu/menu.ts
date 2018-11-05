@@ -5,6 +5,7 @@ import { Platform, ActionSheetController } from 'ionic-angular';
 
 //ENTITY
 import { UsuarioEntity } from '../../model/usuario-entity';
+import { VersaoAppEntity } from '../../model/versao-app-entity';
 
 //PAGES
 import { HomePage } from '../home/home';
@@ -23,6 +24,7 @@ import { availableLanguages, sysOptions } from '../i18n/i18n-constants';
 import { LoginService } from '../../providers/login-service';
 import { UsuarioService } from '../../providers/usuario-service';
 import { LanguageTranslateService } from '../../providers/language-translate-service';
+import { VersaoAppService } from '../../providers/versao-app-service';
 
 @IonicPage()
 @Component({
@@ -42,6 +44,7 @@ export class MenuPage implements OnInit{
   private translate: TranslateService;
   private usuarioEntity: UsuarioEntity;
   public languageDictionary: any;
+  private versaoAppEntity: VersaoAppEntity;
 
   private subTitleLogout: string;
   private cancelLogout: string;
@@ -62,6 +65,7 @@ export class MenuPage implements OnInit{
   cameraUrl: any;
   photoSelected: boolean;
   private _idioma: string;
+  private versao: any;
 
   constructor(public navParams: NavParams,
               private alertCtrl: AlertController,
@@ -72,10 +76,12 @@ export class MenuPage implements OnInit{
               public loginService: LoginService,
               public usuarioService: UsuarioService,
               public platform: Platform,
+              private versaoAppService: VersaoAppService,
               private languageTranslateService: LanguageTranslateService,
               public actionSheetCtrl: ActionSheetController) {
 
       this.usuarioEntity = new UsuarioEntity();
+      this.versaoAppEntity = new VersaoAppEntity();
 
   }
 
@@ -93,15 +99,15 @@ export class MenuPage implements OnInit{
     this.getTraducao();
 
     this.languageProvider.languageChangeEvent.subscribe(selectedLanguage => {
-      this.getTraducaoEmited(); // aqui temos a chamar novamente para funcionar a alteração da linguagem no menu
+      this.getTraducaoEmited(); // aqui temos que chamar novamente para funcionar a alteração da linguagem no menu
     });
     this.loginService.languageChangeEvent.subscribe(selectedLanguage => {
-      this.getTraducaoEmited(); // aqui temos a chamar novamente para funcionar a alteração da linguagem no menu
+      this.getTraducaoEmited(); // aqui temos que chamar novamente para funcionar a alteração da linguagem no menu
     });
   }
 
   ionViewDidLoad() {
-  }
+  }  
 
   getTraducao() {
     try {
@@ -110,8 +116,7 @@ export class MenuPage implements OnInit{
       .getTranslate()
       .subscribe(dados => {
         this.languageDictionary = dados;
-        this.verificaIdUsuario();
-
+        this.getAtualizacaoStatus();
       });
     }
     catch (err){
@@ -143,8 +148,72 @@ export class MenuPage implements OnInit{
     }
   }
 
+  getAtualizacaoStatus() {
+    try {
+      this.loading = this.loadingCtrl.create({
+        content: this.languageDictionary.LOADING_TEXT_AUT,
+      });
+      this.loading.present();
+
+      this.versaoAppEntity.versao = localStorage.getItem(Constants.VERSION_NUMBER);
+      this.versaoAppEntity.tipoAplicativoEnum = 'FORNECEDOR_EMPREGOS';
+
+      this.versaoAppService.versaoApp(this.versaoAppEntity)
+      .then((versaoResult: VersaoAppEntity) => {
+        this.versao = versaoResult;
+
+        if(this.versao.descontinuado == true) {
+          this.showAlertVersao(this.versao);
+        } else {
+          this.verificaIdUsuario();
+        }
+
+      }, (err) => {
+        this.loading.dismiss();
+        this.alertCtrl.create({
+          subTitle: err.message,
+          buttons: ['OK']
+        }).present();
+      });
+
+    }catch (err){
+      if(err instanceof RangeError){
+      }
+      console.log(err);
+    }
+  }
+
+  showAlertVersao(versao) {
+    const alert = this.alertCtrl.create({
+      title: this.languageDictionary.TITLE_ATUALIZACAO_APP,
+      subTitle: this.languageDictionary.SUBTITLE_ATUALIZACAO_APP,
+      buttons: [
+        {
+        text: 'OK',
+          handler: () => {
+            this.getPlatform(versao);
+          }
+      }]
+    });
+    alert.present();
+  }
+
+  getPlatform(versao) {
+    if (this.platform.is('ios')) {
+      window.open(versao.linkIos, '_system', 'location=yes');
+      this.platform.exitApp();
+    }
+
+    if (this.platform.is('android')) {
+      window.open(versao.linkAndroid, '_system', 'location=yes');
+      this.platform.exitApp();
+    }
+
+  }
+
   verificaIdUsuario() {
     if(!localStorage.getItem(Constants.ID_USUARIO)){
+      this.loading.dismiss();
       this.rootPage = HomePage;
     }
     else if(localStorage.getItem(Constants.ID_USUARIO)) {
@@ -160,22 +229,6 @@ export class MenuPage implements OnInit{
       { title: this.languageDictionary.CONFIGURACOES, component: ConfiguracoesPage, isVisible: true, icon: 'ios-settings' }
     ];
 
-    // this.languageProvider.languageChangeEvent.subscribe(selectedLanguage => {
-    //   this.selectedLanguage = selectedLanguage;
-    //   localStorage.setItem(Constants.IDIOMA_USUARIO, selectedLanguage);
-    //   this.getLanguage(); // aqui temos a chamar novamente para funcionar a alteração da linguagem
-    // });
-
-    // this.loginService.nomeFornecedorChangeEvent.subscribe(nomeFornecedor => {
-    //   this.nomeFornecedor = nomeFornecedor;
-    // });
-    // this.loginService.userChangeEvent.subscribe(nomePessoa => {
-    //   this.nomePessoa = nomePessoa.split(/(\s).+\s/).join("");
-    // });
-    // this.loginService.emailPessoaChangeEvent.subscribe(login => {
-    //   this.loginPessoa = login.split(/(\s).+\s/).join("");
-    // });
-
   }
 
   openPage(page) {
@@ -183,24 +236,27 @@ export class MenuPage implements OnInit{
   }
 
   callLoginByIdService(idUsuario) {
-  
+
     try {
-      this.loading = this.loadingCtrl.create({
-        content: this.languageDictionary.LOADING_TEXT
-      });
-      this.loading.present();
 
       this.usuarioEntity.idUsuario = idUsuario;
       this.loginService.loginByIdService(this.usuarioEntity)
         .then((usuarioEntityResult: UsuarioEntity) => {
-          this.rootPage = PrincipalPage;
           this.loading.dismiss();
-          
+          this.rootPage = PrincipalPage;
+
         }, (err) => {
           this.loading.dismiss();
+          err.message = err.message ? err.message : this.languageDictionary.LABEL_FALHA_CONEXAO_SERVIDOR;
           this.alertCtrl.create({
             subTitle: err.message,
-            buttons: ['OK']
+            buttons: [{
+              text: 'OK',
+              handler: () => {
+                this.logout();
+              }
+            }]
+            // buttons: ['OK']
           }).present();
         });
     }
@@ -210,10 +266,18 @@ export class MenuPage implements OnInit{
       }
       console.log(err);
     }
-      
+
   }
 
   logout() {
+    localStorage.removeItem(Constants.ID_USUARIO);
+    localStorage.removeItem(Constants.TOKEN_USUARIO);
+    localStorage.removeItem(Constants.NOME_PESSOA);
+    this.nav.setRoot(HomePage);
+    this.menuCtrl.close();
+  }
+
+  confirmaLogout() {
     let alert = this.alertCtrl.create({
       subTitle: this.languageDictionary.SUBTITLE_SAIR,
       buttons: [
@@ -227,7 +291,7 @@ export class MenuPage implements OnInit{
             localStorage.removeItem(Constants.ID_USUARIO);
             localStorage.removeItem(Constants.TOKEN_USUARIO);
             localStorage.removeItem(Constants.NOME_PESSOA);
-            localStorage.removeItem(Constants.IDIOMA_USUARIO);
+            // localStorage.removeItem(Constants.IDIOMA_USUARIO);
             this.nav.setRoot(HomePage);
             this.menuCtrl.close();
           }
@@ -236,48 +300,5 @@ export class MenuPage implements OnInit{
     });
     alert.present();
   }
-
-  // getLanguage() {
-  //   this._idioma = sysOptions.systemLanguage == 'pt-br' ? 'pt-br' : 'en';
-  //   this.selectedLanguage = localStorage.getItem(Constants.IDIOMA_USUARIO);
-  //   if(!this.selectedLanguage){
-  //     this.selectedLanguage = this._idioma;
-  //   } else if(this.selectedLanguage) {
-  //     if (this.selectedLanguage == 'pt-br') {
-  //       this.loadingText = 'Aguarde...';
-  //       this.subTitleLogout = 'Deseja realmente sair?';
-  //       this.cancelLogout = 'FICAR';
-  //       this.sairLogout = 'SAIR';
-  //       this.minhasVagas = 'Vagas';
-  //       this.vagasArquivadas = 'Vagas arquivadas';
-  //       this.configuracoes = 'Configurações';
-  //       this.candidaturas = 'Candidaturas';
-  //       this.alterarFoto = 'Alterar foto';
-  //       this.abrirCamera = 'Abrir câmera';
-  //       this.abrirGaleria = 'Abrir galeria';
-  //       this.cancelar = 'Cancelar';
-  //     } else {
-  //       this.loadingText = 'Wait...';
-  //       this.subTitleLogout = 'Are you sure you want to log out?';
-  //       this.cancelLogout = 'STAY';
-  //       this.sairLogout = 'LOG OUT';
-  //       this.minhasVagas = 'Vacancies';
-  //       this.vagasArquivadas = 'Archived Jobs';
-  //       this.configuracoes = 'Settings';
-  //       this.candidaturas = 'Applications';
-  //       this.alterarFoto = 'Change photo';
-  //       this.abrirCamera = 'Open camera';
-  //       this.abrirGaleria = 'Open Gallery';
-  //       this.cancelar = 'Cancel';
-  //     }
-  //     this.pages = [
-  //       { title: this.minhasVagas, component: PrincipalPage, isVisible: true, icon: 'ios-search' },
-  //       { title: this.vagasArquivadas, component: VagasArquivadasListPage, isVisible: true, icon: 'ios-folder-open' },
-  //       { title: this.configuracoes, component: ConfiguracoesPage, isVisible: true, icon: 'ios-settings' }
-  //     ];
-  //   }
-  //   this.translate.use(this.selectedLanguage);
-
-  // }
 
 }

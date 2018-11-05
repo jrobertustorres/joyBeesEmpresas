@@ -5,14 +5,11 @@
                     <ion-icon name="menu"></ion-icon>
                   </button>
         <ion-title>
-            <!-- <span>{{ 'CANDIDATOS_VAGA' | translate }}</span> -->
             <span style="font-size: 16px;">{{ nomeVaga }}</span>
         </ion-title>
     </ion-navbar>
 
     <div padding>
-        <!-- <ion-segment [(ngModel)]="segment" class="background-stable" style="position: fixed;margin-left: -3%;" (ionChange)="selectedTabChanged($event)"> -->
-        <!-- <ion-toolbar> -->
         <ion-segment [(ngModel)]="segment" (ionChange)="selectedTabChanged($event)">
             <ion-segment-button value="candidatosList">
                 {{ 'CANDIDATOS' | translate }}
@@ -23,18 +20,6 @@
                 <ion-badge item-end class="badge-style">{{ qtdFinalistaVaga }}</ion-badge>
             </ion-segment-button>
         </ion-segment>
-        <!-- </ion-toolbar> -->
-
-        <!-- <ion-toolbar>
-            <ion-segment [(ngModel)]="icons" color="secondary">
-                <ion-segment-button value="camera">
-                    <ion-icon name="camera"></ion-icon>
-                </ion-segment-button>
-                <ion-segment-button value="bookmark">
-                    <ion-icon name="bookmark"></ion-icon>
-                </ion-segment-button>
-            </ion-segment>
-        </ion-toolbar> -->
     </div>
 
 </ion-header>
@@ -43,20 +28,6 @@
     <ion-refresher (ionRefresh)="doRefreshCandidatosVaga($event)" style="margin-top: -10px;" *ngIf="refresh">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <!-- <div class="h2-color-cards" text-wrap padding style="margin-top: 50px;" *ngIf="vagas?.length == 0">
-        <div style="text-align: center;color: #484848;"><strong>{{ 'SEM_CANDIDATO' | translate }}</strong></div>
-        <div style="text-align: center;">
-            <ion-icon style="font-size: 30px;color: #484848;" ios="ios-sad" md="md-sad"></ion-icon>
-        </div>
-    </div> -->
-    <!-- <ion-list>
-        <button ion-item *ngFor="let vaga of vagas" text-wrap (click)="callDetalheCandidatoVaga(vaga.idVagaUsuario)">
-            <strong>{{ vaga.nomePessoa }}</strong>
-            <p style="color: #999 ">
-                <ion-icon ios="ios-calendar" md="md-calendar" class="margin-icon"></ion-icon>{{ 'DATA_CANDIDATURA' | translate }}: {{ vaga.dataCandidatadaFormat }}
-            </p>
-        </button>
-    </ion-list> -->
 
     <div [ngSwitch]="segment">
         <ion-list *ngSwitchCase="'candidatosList'">
@@ -68,15 +39,6 @@
                 </div>
             </div>
 
-            <!-- <div class="h2-color-cards" text-wrap padding style="margin-top: 50px;" *ngIf="vagasAtivas?.length == 0">
-                <div style="text-align: center;color: #484848;"><strong>{{ 'SEM_VAGAS_ATIVAS' | translate }}</strong></div>
-                <div style="text-align: center;">
-                    <ion-icon style="font-size: 30px;color: #484848;" ios="ios-sad" md="md-sad"></ion-icon>
-                </div>
-                <div>
-                    <button ion-button block (click)="callTelaCriarVaga()" color="navbarColor" class="margin-button-save span-style-color">{{ 'BTN_ANUNCIAR_VAGA' | translate }}</button>
-                </div>
-            </div> -->
             <div>
                 <button ion-item *ngFor="let vaga of vagas" text-wrap (click)="callDetalheCandidatoVaga(vaga.idVagaUsuario)">
                     <span style="font-size: 15px;"><b>{{ vaga.nomePessoa }}</b></span>
@@ -88,20 +50,14 @@
         </ion-list>
 
         <ion-list *ngSwitchCase="'finalistasList'">
-            <!-- <ion-refresher (ionRefresh)="doRefreshVagasCidade($event)" style="margin-top: -50px;">
-                            <ion-refresher-content></ion-refresher-content>
-                        </ion-refresher> -->
             <div class="h2-color-cards" text-wrap padding style="margin-top: 50px;" *ngIf="vagas?.length == 0">
                 <div style="text-align: center;color: #484848;"><strong>{{ 'SEM_VAGAS_ARQUIVADAS' | translate }}</strong></div>
                 <div style="text-align: center;">
-                    <ion-icon style="font-size: 30px;color: #484848;" ios="ios-sad" md="md-sad"></ion-icon>
+                    <ion-icon style="font-size: 30px;color: #484848;" ios="md-sad" md="md-sad"></ion-icon>
                 </div>
             </div>
-            <!-- <div class="style-qtd-vagas" *ngIf="vagas?.length > 0">
-                {{ vagas?.length }} {{ 'VAGAS' | translate }}
-            </div> -->
             <div>
-                <button ion-item *ngFor="let finalista of finalistasVagas" text-wrap (click)="callDetalheCandidatoVaga(finalista.idVagaUsuario)">
+                <button ion-item *ngFor="let finalista of vagas" text-wrap (click)="callDetalheCandidatoVaga(finalista.idVagaUsuario)">
                     <span style="font-size: 15px;"><b>{{ finalista.nomePessoa }}</b></span>
                     <p style="color: #999 ">
                         <ion-icon ios="ios-calendar" md="md-calendar" class="margin-icon"></ion-icon>{{ 'DATA_CANDIDATURA' | translate }}: {{ finalista.dataCandidatadaFormat }}

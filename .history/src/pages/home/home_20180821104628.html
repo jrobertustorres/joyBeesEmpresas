@@ -1,0 +1,116 @@
+<!-- <ion-header> -->
+<!-- <div class="content-stable div-header-home">
+        <div style="margin-top: 30px;">
+            <div class="div-style-logo">
+                <img src="assets/imgs/logo_joy.png" class="logo-style">
+                <p class="span-empresa">{{ 'EMPRESAS_UPPER' | translate }}</p>
+            </div>
+        </div>
+        <div class="div-home-text">
+            <span style="text-align: center; ">{{ 'HOME_TEXT' | translate }}</span>
+        </div>
+    </div> -->
+<!-- </ion-header> -->
+
+<!-- <ion-content style="margin-top: -65px;"> -->
+<ion-content class="content-stable">
+
+    <div class="div-style-logo">
+        <img src="assets/imgs/logo_joy.png" class="logo-style">
+        <span class="span-empresa">{{ 'EMPRESAS_UPPER' | translate }}</span>
+    </div>
+    <div class="div-home-text">
+        <span style="text-align: center; ">{{ 'HOME_TEXT' | translate }}</span>
+    </div>
+
+    <!-- <div style="margin-top: 210px;" class="fixed-content"> -->
+    <div>
+
+        <div padding>
+            <!-- <ion-segment [(ngModel)]="segment" class="background-stable ion-segment-style"> -->
+            <!-- <ion-segment [(ngModel)]="segment" class="background-stable"> -->
+            <ion-segment [(ngModel)]="segment" style="background-color: #fff;">
+                <ion-segment-button value="login">
+                    Login
+                </ion-segment-button>
+                <ion-segment-button value="cadastrarEmpresa">
+                    {{ 'CADASTRAR_EMPRESA' | translate }}
+                </ion-segment-button>
+            </ion-segment>
+        </div>
+
+        <div [ngSwitch]="segment">
+            <div *ngSwitchCase="'cadastrarEmpresa'">
+                <div>
+                    <div style="text-align:center;">
+                        <p style="color:#000000;">{{ 'LABEL_INFORME_DADOS' | translate }}</p>
+                    </div>
+                </div>
+                <!-- <p padding style="color: #555">Informe os dados abaixo que entraremos em contato</p> -->
+                <form [formGroup]="cadastrarEmpresaForm" (ngSubmit)="submeterPreCadastroEmpresa()" style="margin-top: -10px;">
+
+                    <ion-item>
+                        <ion-label stacked>{{ 'NOME_FANTASIA_EMPRESA' | translate }}</ion-label>
+                        <ion-input formControlName="nomeFantasia" [(ngModel)]="usuarioEntity.nomeFantasia" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+                    </ion-item>
+                    <div *ngIf="!cadastrarEmpresaForm.get('nomeFantasia').valid && cadastrarEmpresaForm.get('nomeFantasia').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+                    <div *ngIf="cadastrarEmpresaForm.get('nomeFantasia').hasError('maxlength')" [ngClass]="'class-error-form'">{{ 'MAX_100_CARACTERES' | translate }}</div>
+
+                    <ion-item>
+                        <ion-label stacked>{{ 'EMAIL' | translate }}</ion-label>
+                        <ion-input formControlName="email" [(ngModel)]="usuarioEntity.email" type="email"></ion-input>
+                    </ion-item>
+                    <div *ngIf="(!cadastrarEmpresaForm.get('email').valid && cadastrarEmpresaForm.get('email').touched) && !cadastrarEmpresaForm.get('email').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+                    <div *ngIf="cadastrarEmpresaForm.get('email').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'EMAIL_INVALIDO' | translate }}</div>
+
+                    <ion-item>
+                        <ion-label stacked>{{ 'NOME_CONTATO' | translate }}</ion-label>
+                        <ion-input formControlName="pessoaContato" [(ngModel)]="usuarioEntity.pessoaContato" type="text" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+                    </ion-item>
+                    <div *ngIf="!cadastrarEmpresaForm.get('pessoaContato').valid && cadastrarEmpresaForm.get('pessoaContato').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+                    <div *ngIf="cadastrarEmpresaForm.get('pessoaContato').hasError('maxlength')" [ngClass]="'class-error-form'">{{ 'MAX_100_CARACTERES' | translate }}</div>
+
+                    <ion-item>
+                        <ion-label stacked>{{ 'TELEFONE' | translate }}</ion-label>
+                        <ion-input formControlName="telefone" [(ngModel)]="usuarioEntity.telefone" type="text"></ion-input>
+                    </ion-item>
+                    <div *ngIf="cadastrarEmpresaForm.get('telefone').hasError('maxlength')" [ngClass]="'class-error-form'">{{ 'MAX_50_CARACTERES' | translate }}</div>
+
+                    <div padding>
+                        <button ion-button block type="submit" color="navbarColor" class="margin-button-save span-style-color">{{ 'ENVIAR' | translate }}</button>
+                    </div>
+                </form>
+
+            </div>
+
+            <div *ngSwitchCase="'login'">
+                <form [formGroup]="loginForm" (ngSubmit)="submeterLogin()">
+
+                    <ion-item>
+                        <ion-label stacked color="dark">{{ 'EMAIL' | translate }}</ion-label>
+                        <ion-input formControlName="login" type="email" style="font-size: 14px;" placeholder="Ex.: {{ 'PLACE_EMAIL' | translate }}" spellcheck="false" autocapitalize="off"></ion-input>
+                    </ion-item>
+                    <div *ngIf="(!loginForm.get('login').valid && loginForm.get('login').touched) && !loginForm.get('login').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+                    <div *ngIf="loginForm.get('login').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'EMAIL_INVALIDO' | translate }}</div>
+
+                    <ion-item>
+                        <ion-label stacked color="dark">{{ 'SENHA' | translate }}</ion-label>
+                        <ion-input formControlName="senha" type="password" style="font-size: 14px;" placeholder="{{ 'DIGITE_SENHA' | translate }}"></ion-input>
+                    </ion-item>
+                    <div *ngIf="!loginForm.get('senha').valid && loginForm.get('senha').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
+
+                    <div padding>
+                        <button ion-button block type="submit" color="navbarColor" class="margin-button-save span-style-color">{{ 'ENTRAR' | translate }}</button>
+                    </div>
+                </form>
+
+                <div class="forgot-pass-style-div">
+                    <a (click)="goRecuperarSenha()" class="botao01">{{ 'ESQUECI_SENHA' | translate }}</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</ion-content>

@@ -17,15 +17,19 @@
         <ion-item>
             <ion-label stacked color="dark">{{ 'EMAIL' | translate }}</ion-label>
             <!-- <ion-input [(ngModel)]="usuarioEntity.login" formControlName="login" type="email" placeholder="Ex.: nome@email.com" spellcheck="false" autocapitalize="off"></ion-input> -->
-            <ion-input formControlName="login" type="email" placeholder="Ex.: {{ 'PLACE_EMAIL' | translate }}" spellcheck="false" autocapitalize="off"></ion-input>
+            <ion-input formControlName="login" type="email" placeholder="Ex.: {{ 'PLACE_EMAIL' | translate }}" style="font-size: 14px;" spellcheck="false" autocapitalize="off"></ion-input>
         </ion-item>
         <div *ngIf="(!loginForm.get('login').valid && loginForm.get('login').touched) && !loginForm.get('login').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
         <div *ngIf="loginForm.get('login').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'EMAIL_INVALIDO' | translate }}</div>
 
         <ion-item>
             <ion-label stacked color="dark">{{ 'SENHA' | translate }}</ion-label>
-            <!-- <ion-input [(ngModel)]="usuarioEntity.senha" formControlName="senha" type="password" placeholder="Digite sua senha"></ion-input> -->
-            <ion-input formControlName="senha" type="password" placeholder="{{ 'DIGITE_SENHA' | translate }}"></ion-input>
+            <ion-input formControlName="senha" id="senha" type="text" *ngIf="showPwd" style="font-size: 14px;" placeholder="{{ 'DIGITE_SENHA' | translate }}"></ion-input>
+            <ion-input formControlName="senha" id="senha" type="password" *ngIf="!showPwd" style="font-size: 14px;" placeholder="{{ 'DIGITE_SENHA' | translate }}"></ion-input>
+            <button icon-only ion-button clear type="button" item-right color="dark" (click)="showPwd=!showPwd">
+                <ion-icon *ngIf="showPwd" name="eye"></ion-icon>
+                <ion-icon *ngIf="!showPwd" name="eye-off"></ion-icon>
+            </button>
         </ion-item>
         <div *ngIf="!loginForm.get('senha').valid && loginForm.get('senha').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
 

@@ -151,8 +151,10 @@
     "QUANTIDADE_VAGAS": "Quantidade de vagas",
     "EMPRESA": "Empresa",
     "EMPRESAS_UPPER": "EMPRESAS",
-    "SALARIO_OFERECIDO_HOMEM": "Salário Homem",
-    "SALARIO_OFERECIDO_MULHER": "Salário Mulher",
+    "SALARIO_OFERECIDO_HOMEM": "Salário Homem (à partir de)",
+    "SALARIO_OFERECIDO_MULHER": "Salário Mulher (à partir de)",
+    "SALARIO_OFERECIDO_HOMEM_ATE": "Salário Homem (até)",
+    "SALARIO_OFERECIDO_MULHER_ATE": "Salário Mulher (até)",
     "AMBOS": "Ambos",
     "BTN_EDITAR_VAGA": "EDITAR VAGA",
     "EDITAR_VAGA": "Editar vaga",
@@ -174,7 +176,7 @@
     "BTN_REABRIR_VAGA": "REABRIR VAGA",
     "LABEL_VER_CANDIDATOS": "VER CANDIDATOS",
     "LABEL_JA_CANDIDATADOS": "Filtrar vagas com candidatos?",
-    "LABEL_CEP": "Cep",
+    "LABEL_CEP": "Código postal",
     "LABEL_INFORME_DADOS": "Informe os dados abaixo que entraremos em contato",
     "LABEL_ENCERRADA": "Encerrada em:",
     "TITLE_CONTATO_ENVIADO": "Contato enviado",
@@ -182,6 +184,7 @@
     "SENHA_ALTERADA_SUCESSO": "Sua senha foi alterada!",
     "TOAST_RECUPERAR_SENHA": "Um email foi enviado com a nova senha! Favor verificar.",
     "LOADING_TEXT": "Aguarde...",
+    "LOADING_TEXT_AUT": "Autenticando...",
     "TOAST_VAGA_INSERIDA": "A vaga foi inserida!",
     "TOAST_VAGA_ATUALIZADA": "A vaga foi atualizada!",
     "TOAST_VAGA_REABERTA": "A vaga foi reaberta!",
@@ -202,7 +205,13 @@
     "SUBTITLE_CONECTION": "Você está offline. Verifique sua conexão de rede!",
     "BTN_PUSH_IGNORAR": "IGNORAR",
     "BTN_PUSH_VER": "VER",
-    "LABEL_NOVA_NOTIFICACAO": "Nova notificação"
+    "LABEL_NOVA_NOTIFICACAO": "Nova notificação",
+    "LABEL_TODAS_CIDADES": "Todas",
+    "LABEL_FALHA_CONEXAO_SERVIDOR": "Falha ao conectar com o servidor",
+    "LABEL_DISP_MUDANCA": "Disponibilidade de mudança?",
+    "LABEL_DISP_HORA_EXTRA": "Disponibilidade de hora extra?",
+    "LABEL_POSSUI_FILHOS": "Possui filhos?",
+    "IDADE_FILHO_CACULA": "Idade do mais novo"
 
 
 

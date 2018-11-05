@@ -47,14 +47,16 @@
         </ion-item> -->
 
         <ion-item (click)="selecionaDataInicial()">
-            <ion-label stacked>{{ 'DATA_INICIO_VAGA' | translate }}</ion-label>
-            <ion-datetime formControlName="dataInicial" [attr.disabled]="true" displayFormat="YYYY/MM/DD" name="dataInicial" min="2018" [(ngModel)]="dataInicial"></ion-datetime>
+            <ion-label stacked style="color: #000">{{ 'DATA_INICIO_VAGA' | translate }}</ion-label>
+            <ion-datetime formControlName="dataInicial" displayFormat="YYYY/MM/DD" name="dataInicial" min="2018" max="2099" [(ngModel)]="dataInicial"></ion-datetime>
+            <!-- <ion-datetime formControlName="dataInicial" [attr.disabled]="true" displayFormat="YYYY/MM/DD" name="dataInicial" min="2018" max="2099" [(ngModel)]="dataInicial"></ion-datetime> -->
         </ion-item>
         <div *ngIf="!criaVagaForm.get('dataInicial').valid && criaVagaForm.get('dataInicial').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
 
         <ion-item (click)="selecionaDataFinal()">
-            <ion-label stacked>{{ 'DATA_FINAL_VAGA' | translate }}</ion-label>
-            <ion-datetime formControlName="dataFinal" [attr.disabled]="true" displayFormat="YYYY/MM/DD" name="dataFinal" min="2018" [(ngModel)]="dataFinal"></ion-datetime>
+            <ion-label stacked style="color: #000">{{ 'DATA_FINAL_VAGA' | translate }}</ion-label>
+            <ion-datetime formControlName="dataFinal" displayFormat="YYYY/MM/DD" name="dataFinal" min="2018" max="2099" [(ngModel)]="dataFinal"></ion-datetime>
+            <!-- <ion-datetime formControlName="dataFinal" [attr.disabled]="true" displayFormat="YYYY/MM/DD" name="dataFinal" min="2018" max="2099" [(ngModel)]="dataFinal"></ion-datetime> -->
         </ion-item>
         <div *ngIf="!criaVagaForm.get('dataFinal').valid && criaVagaForm.get('dataFinal').touched" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
 
@@ -76,12 +78,22 @@
 
         <ion-item [hidden]="escondeSalarioHomem">
             <ion-label stacked>{{ 'SALARIO_OFERECIDO_HOMEM' | translate }}</ion-label>
-            <ion-input formControlName="salarioHomem" [(ngModel)]="vagaDetalheEntity.salarioHomem" (keyup)="getValorSalarioHomem(vagaDetalheEntity.salarioHomem)" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+            <ion-input formControlName="salarioHomem" [(ngModel)]="vagaDetalheEntity.salarioHomem" (keyup)="getValorSalarioHomem(vagaDetalheEntity.salarioHomem)"></ion-input>
+        </ion-item>
+
+        <ion-item [hidden]="escondeSalarioHomem">
+            <ion-label stacked>{{ 'SALARIO_OFERECIDO_HOMEM_ATE' | translate }}</ion-label>
+            <ion-input formControlName="salarioHomemAte" [(ngModel)]="vagaDetalheEntity.salarioHomemAte" (keyup)="getValorSalarioHomemAte(vagaDetalheEntity.salarioHomemAte)"></ion-input>
         </ion-item>
 
         <ion-item [hidden]="escondeSalarioMulher">
             <ion-label stacked>{{ 'SALARIO_OFERECIDO_MULHER' | translate }}</ion-label>
-            <ion-input formControlName="salarioMulher" [(ngModel)]="vagaDetalheEntity.salarioMulher" (keyup)="getValorSalarioMulher(vagaDetalheEntity.salarioMulher)" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></ion-input>
+            <ion-input formControlName="salarioMulher" [(ngModel)]="vagaDetalheEntity.salarioMulher" (keyup)="getValorSalarioMulher(vagaDetalheEntity.salarioMulher)"></ion-input>
+        </ion-item>
+
+        <ion-item [hidden]="escondeSalarioMulher">
+            <ion-label stacked>{{ 'SALARIO_OFERECIDO_MULHER_ATE' | translate }}</ion-label>
+            <ion-input formControlName="salarioMulherAte" [(ngModel)]="vagaDetalheEntity.salarioMulherAte" (keyup)="getValorSalarioMulherAte(vagaDetalheEntity.salarioMulherAte)"></ion-input>
         </ion-item>
 
         <ion-item-divider class="item-divider-style" style="margin-top: 10px;">

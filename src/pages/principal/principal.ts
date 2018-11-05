@@ -45,7 +45,7 @@ export class PrincipalPage {
   private refresh: boolean = false
   public languageDictionary: any;
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
               public navParams: NavParams,
               translate: TranslateService,
               private vagaService: VagaService,
@@ -144,7 +144,7 @@ export class PrincipalPage {
     try {
 
       this.vagaDetalheEntity.limiteDados = this.vagaDetalheEntity.limiteDados ? this.vagasAtivas.length : null;
-      // if(this.vagaDetalheEntity.limiteDados == null) {
+      
       if(this.refresh == false) {
         this.loading = this.loadingCtrl.create({
           content: this.languageDictionary.LOADING_TEXT,

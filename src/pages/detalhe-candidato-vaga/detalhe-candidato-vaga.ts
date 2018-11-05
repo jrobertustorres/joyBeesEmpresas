@@ -48,7 +48,7 @@ export class DetalheCandidatoVagaPage {
   public idVagaUsuario: number;
   public languageDictionary: any;
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public loadingCtrl: LoadingController,
               public alertCtrl: AlertController,
@@ -123,6 +123,10 @@ export class DetalheCandidatoVagaPage {
         this.usuarioDetalheVagaEntity.grauFala = this.usuarioDetalheVagaEntity.grauFala.charAt(0).toUpperCase() + this.usuarioDetalheVagaEntity.grauFala.slice(1).toLowerCase();
         this.usuarioDetalheVagaEntity.grauEscrita = this.usuarioDetalheVagaEntity.grauEscrita.charAt(0).toUpperCase() + this.usuarioDetalheVagaEntity.grauEscrita.slice(1).toLowerCase();
 
+        this.usuarioDetalheVagaEntity.disponibilidadeMudanca = this.usuarioDetalheVagaEntity.disponibilidadeMudanca == true ? this.languageDictionary.LABEL_SIM : this.languageDictionary.LABEL_NAO;
+        this.usuarioDetalheVagaEntity.disponibilidadeHoraExtra = this.usuarioDetalheVagaEntity.disponibilidadeHoraExtra == true ? this.languageDictionary.LABEL_SIM : this.languageDictionary.LABEL_NAO;
+        this.usuarioDetalheVagaEntity.possuiFilhos = this.usuarioDetalheVagaEntity.possuiFilhos == true ? this.languageDictionary.LABEL_SIM : this.languageDictionary.LABEL_NAO;
+        
         this.loading.dismiss();
 
     }, (err) => {
@@ -183,7 +187,7 @@ export class DetalheCandidatoVagaPage {
 
   descartarCandidatoVaga() {
     try {
-      
+
       this.loading = this.loadingCtrl.create({
         content: this.languageDictionary.LOADING_TEXT,
       });
@@ -218,7 +222,7 @@ export class DetalheCandidatoVagaPage {
 
   setFinalistaCandidatoVaga() {
     try {
-      
+
       this.loading = this.loadingCtrl.create({
         content: this.languageDictionary.LOADING_TEXT,
       });

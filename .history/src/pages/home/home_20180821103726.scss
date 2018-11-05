@@ -1,0 +1,68 @@
+page-home {
+    .botao01 {
+        color: #222222;
+        font-size: 12px;
+        text-align: center;
+        text-decoration: none;
+    }
+    .forgot-pass-style-div {
+        text-align: center;
+        margin-top: 10px;
+    }
+    .div-header-home {
+        position: fixed;
+        // height: 35%;
+        width: 100%;
+    }
+    .logo-style {
+        display: block;
+        width: 260px;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: -10px;
+        padding: 30px;
+    }
+    .span-style {
+        font-size: 13px;
+        position: fixed;
+    }
+    .style-right-icon-facebook {
+        margin-right: 100%;
+    }
+    .style-right-icon {
+        margin-right: 100%;
+        color: #484848;
+    }
+    .text-under-logo {
+        margin-bottom: -10px;
+        text-align: center!important;
+    }
+    .div-style-logo {
+        margin-top: 40px;
+        margin-bottom: 50px;
+    }
+    .div-home-text {
+        text-align: center;
+        margin-top: 15px;
+        margin-bottom: 20px;
+        // margin-top: -50px;
+        // margin-bottom: 40px;
+    }
+    .span-empresa {
+        // float: right;
+        // color: #FDB313;
+        // font-weight: 400;
+        color: #FDB313;
+        font-weight: 400;
+        display: block;
+        width: 260px;
+        height: auto;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: -20px;
+        padding: 20px;
+        text-align: right;
+        margin-top: -30px;
+    }
+}

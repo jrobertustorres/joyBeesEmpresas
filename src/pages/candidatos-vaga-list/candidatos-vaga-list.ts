@@ -33,7 +33,7 @@ export class CandidatosVagaListPage {
   private refresh: boolean = false;
   public languageDictionary: any;
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private vagaService: VagaService,
               public alertCtrl: AlertController,
@@ -102,7 +102,6 @@ export class CandidatosVagaListPage {
       this.vagaDetalheEntity.limiteDados = this.vagaDetalheEntity.limiteDados ? this.vagas.length : null;
       this.vagaDetalheEntity.idVaga = this.idVaga;
 
-      // if(this.vagaDetalheEntity.limiteDados == null) {
       if(this.refresh == false) {
         this.loading = this.loadingCtrl.create({
           content: this.languageDictionary.LOADING_TEXT,
@@ -148,7 +147,8 @@ export class CandidatosVagaListPage {
 
       this.vagaService.findFavoritosVaga(this.vagaDetalheEntity)
         .then((vagasListaEntityResult: VagaListaEntity) => {
-          this.finalistasVagas = vagasListaEntityResult;
+          this.vagas = vagasListaEntityResult;
+
           if (this.vagas.length > 0) {
             this.qtdFinalistaVaga = this.vagas[0].qtdUsuarioFinalistasVaga;
             this.nomeVaga = this.vagas[0].nomeVaga;

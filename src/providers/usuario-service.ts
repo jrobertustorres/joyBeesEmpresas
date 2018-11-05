@@ -31,7 +31,7 @@ export class UsuarioService {
 
       return new Promise((resolve, reject) => {
 
-        this._http.post(Constants.API_URL + 'adicionaUsuario/', 
+        this._http.post(Constants.API_URL + 'adicionaUsuario/',
           JSON.stringify(this.usuarioEntity), this.options)
           .map(function (res) { return res.json(); })
           .subscribe(data => {
@@ -58,20 +58,18 @@ export class UsuarioService {
     }
   }
 
-  public cadastraImagemUsuario(usuarioEntity) {
+  /*public cadastraImagemUsuario(usuarioEntity) {
     try {
 
       return new Promise((resolve, reject) => {
-        // this._storage.get(Constants.TOKEN_USUARIO).then((tokenUsuario) => {
-          this._http.post(Constants.API_URL + 'adicionaImagemUsuario/'
-          + localStorage.getItem(Constants.TOKEN_USUARIO), JSON.stringify(usuarioEntity), this.options)
-            .map(function (res) { return res.json(); })
-            .subscribe(data => {
-              resolve(data);
-            }, (err) => {
-              // reject(err.json());
-            });
-        // });
+        this._http.post(Constants.API_URL + 'adicionaImagemUsuario/'
+        + localStorage.getItem(Constants.TOKEN_USUARIO), JSON.stringify(usuarioEntity), this.options)
+          .map(function (res) { return res.json(); })
+          .subscribe(data => {
+            resolve(data);
+          }, (err) => {
+            reject(err.json());
+          });
       });
 
     } catch (e){
@@ -79,7 +77,7 @@ export class UsuarioService {
         console.log('out of range');
       }
     }
-  }
+  }*/
 
   // public getDadosUsuario() {
   //   try {
@@ -115,7 +113,7 @@ export class UsuarioService {
           .toPromise()
           .catch();
         // });
-  
+
       } catch (e){
         if(e instanceof RangeError){
           console.log('out of range');
@@ -125,9 +123,9 @@ export class UsuarioService {
 
     public atualizaUsuario(usuarioEntity) {
         try {
-    
+
           // this.usuarioEntity = new UsuarioEntity();
-    
+
           return new Promise((resolve, reject) => {
             // this._storage.get(Constants.TOKEN_USUARIO).then((tokenUsuario) => {
               this._http.post(Constants.API_URL + 'editaUsuario/'
@@ -143,7 +141,7 @@ export class UsuarioService {
                 });
             // });
           });
-    
+
         } catch (e){
           if(e instanceof RangeError){
             console.log('out of range');
@@ -153,9 +151,9 @@ export class UsuarioService {
 
   public atualizaSenhaUsuario(usuarioEntity) {
       try {
-  
+
         this.usuarioEntity = new UsuarioEntity();
-  
+
         return new Promise((resolve, reject) => {
           // this._storage.get(Constants.TOKEN_USUARIO).then((tokenUsuario) => {
             this._http.post(Constants.API_URL + 'alteraSenhaUsuario/'
@@ -167,7 +165,7 @@ export class UsuarioService {
               });
           // });
         });
-  
+
       } catch (e){
         if(e instanceof RangeError){
           console.log('out of range');
@@ -199,23 +197,15 @@ export class UsuarioService {
   public getDetalheCandidato(idVagaUsuario) {
     try {
       return new Promise((resolve, reject) => {
-        // this._storage.get(Constants.TOKEN_USUARIO).then((tokenUsuario) => {
-          this._http.post(Constants.API_URL + 'findDadosDetalhadoUsuario/'
-            + localStorage.getItem(Constants.TOKEN_USUARIO), JSON.stringify(idVagaUsuario), this.options)
-            .map(res=>res.json())
-            .subscribe(data => {
-              resolve(data);
-            }, (err) => {
-              reject(err.json());
-            });
-        // });
+        this._http.post(Constants.API_URL + 'findDadosDetalhadoUsuario/'
+          + localStorage.getItem(Constants.TOKEN_USUARIO), JSON.stringify(idVagaUsuario), this.options)
+          .map(res=>res.json())
+          .subscribe(data => {
+            resolve(data);
+          }, (err) => {
+            reject(err.json());
+          });
       });
-      // return this._http.post(Constants.API_URL + 'findDadosDetalhadoUsuario/'
-      //   + localStorage.getItem(Constants.TOKEN_USUARIO), this.options)
-      //   .map(res => res.json())
-      //   .toPromise()
-      //   .catch();
-      // });
 
     } catch (e){
       if(e instanceof RangeError){

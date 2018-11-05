@@ -34,13 +34,13 @@ export class MyApp {
   private _idioma: string;
   public languageDictionary: any;
 
-  constructor(public platform: Platform, 
-              public statusBar: StatusBar, 
+  constructor(public platform: Platform,
+              public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               public alertCtrl: AlertController,
               public menuCtrl: MenuController,
               translate: TranslateService,
-              private network: Network, 
+              private network: Network,
               private globalization: Globalization,
               private languageTranslateService: LanguageTranslateService,
               private appVersion: AppVersion,
@@ -70,7 +70,7 @@ export class MyApp {
       this.splashScreen.hide();
       // aqui checamos a conexão ao entrar no app
       // this.checkNetwork();
-      
+
       // abaixo verificamos se a intenet cair depois que o cliente já entrou no app
       this.network.onDisconnect().subscribe(() => {
         let alertDisconect = this.alertCtrl.create({
@@ -118,14 +118,15 @@ export class MyApp {
       this.globalization.getPreferredLanguage().then(result => {
         let idioma = result.value == 'pt-BR' ? 'pt-br' : 'en';
         localStorage.setItem(Constants.IDIOMA_USUARIO, idioma);
+        this.getTraducao();
       });
     }
     else {
       let browserLanguage = this.translate.getBrowserLang() || defaultLanguage;
       browserLanguage = browserLanguage == 'pt' ? 'pt-br' : 'en';
       localStorage.setItem(Constants.IDIOMA_USUARIO, browserLanguage);
+      this.getTraducao();
     }
-    this.getTraducao();
 
   }
 
@@ -139,7 +140,7 @@ export class MyApp {
         senderID: '464022525717',
         sound   : 'true',
         vibrate : true
-        // icon    : 'icon'
+        // icon: './assets/images/home/KmartLogo'
       },
       ios: {
         alert: 'true',
@@ -193,24 +194,5 @@ export class MyApp {
      alert.present();
     }
   }
-
-  // getLanguage(){
-  //   this._idioma = sysOptions.systemLanguage == 'pt-br' ? 'pt-br' : 'en';
-  //   this.selectedLanguage = localStorage.getItem(Constants.IDIOMA_USUARIO);
-  //       if(!this.selectedLanguage){
-  //         this.selectedLanguage = this._idioma;
-  //       }
-  //       else if(this.selectedLanguage) {
-  //         if (this.selectedLanguage == 'pt-br') {
-  //           this.titleConection = 'Conexão de internet!';
-  //           this.subTitleConection = 'Você está offline. Verifique sua conexão de rede!';
-  //         } else {
-  //           this.titleConection = 'Internet Connection!';
-  //           this.subTitleConection = 'You are offline. Please Check Your Network connection!';
-  //         }
-  //       }
-  //       this.translate.use(this.selectedLanguage);
-
-  // }
 
 }

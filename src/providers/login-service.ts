@@ -3,8 +3,6 @@ import 'rxjs/add/operator/map';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Constants } from '../app/constants';
 
-// import { Storage } from '@ionic/storage';
-
 //ENTITYS
 import { UsuarioEntity } from '../model/usuario-entity';
 
@@ -19,19 +17,21 @@ export class LoginService {
   public languageChangeEvent = new EventEmitter();
 
   constructor(public http: Http) {
+    this.usuarioEntity = new UsuarioEntity();
   }
 
   public loginFornecedor(usuarioEntity) {
     try {
       localStorage.removeItem(Constants.IDIOMA_USUARIO);
-      this.usuarioEntity = new UsuarioEntity();
+      // this.usuarioEntity = new UsuarioEntity();
       this.usuarioEntity = usuarioEntity;
       this.usuarioEntity.tokenPush = localStorage.getItem(Constants.TOKEN_PUSH);
       this.usuarioEntity.versaoApp = localStorage.getItem(Constants.VERSION_NUMBER);
       this.usuarioEntity.idiomaUsuario = localStorage.getItem(Constants.IDIOMA_USUARIO) == 'pt-br' ? 'PORTUGUES' : 'INGLES';
 
       return new Promise((resolve, reject) => {
-        this.http.post(Constants.API_URL + 'loginFornecedor/', JSON.stringify(this.usuarioEntity), this.options)
+        this.http.post(Constants.API_URL + 'loginFornecedor/', 
+          JSON.stringify(this.usuarioEntity), this.options)
           .map(res=>res.json())
           .subscribe(data => {
             resolve(data);
@@ -60,12 +60,13 @@ export class LoginService {
 
   public loginByIdService(usuarioEntity) {
     try {
-      this.usuarioEntity = new UsuarioEntity();
+      // this.usuarioEntity = new UsuarioEntity();
       this.usuarioEntity = usuarioEntity;
       this.usuarioEntity.tokenPush = localStorage.getItem(Constants.TOKEN_PUSH);
       this.usuarioEntity.versaoApp = localStorage.getItem(Constants.VERSION_NUMBER);
       return new Promise((resolve, reject) => {
-        this.http.post(Constants.API_URL + 'loginById/', JSON.stringify(usuarioEntity), this.options)
+        this.http.post(Constants.API_URL + 'loginById/', 
+          JSON.stringify(this.usuarioEntity), this.options)
           .map(res=>res.json())
           .subscribe(data => {
             resolve(data);

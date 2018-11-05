@@ -47,6 +47,7 @@ import { VagaDetalheEntity} from '../model/vaga-detalhe-entity';
 import { EmpresaEntity } from '../model/empresa-entity';
 import { UsuarioDetalheVagaEntity } from '../model/usuario-detalhe-vaga-entity';
 import { PreCadastroEntity } from '../model/pre-cadastro-entity';
+import { VersaoAppEntity } from '../model/versao-app-entity';
 
 //SERVICES
 import { EstadosService } from '../providers/estados-service';
@@ -57,6 +58,7 @@ import { VagaService } from '../providers/vaga-service';
 import { LanguageTranslateService } from '../providers/language-translate-service';
 import { FornecedorService } from '../providers/fornecedor-service';
 import { RamoEmpresaService } from '../providers/ramo-empresa-service';
+import { VersaoAppService } from '../providers/versao-app-service';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
@@ -143,11 +145,13 @@ function provideStorage() {
     VagaService,
     FornecedorService,
     RamoEmpresaService,
+    LanguageTranslateService,
+    VersaoAppService,
     VagaDetalheEntity,
     EmpresaEntity,
     UsuarioDetalheVagaEntity,
     PreCadastroEntity,
-    LanguageTranslateService,
+    VersaoAppEntity,
     LanguageProvider,
     DatePicker,
     AppVersion,

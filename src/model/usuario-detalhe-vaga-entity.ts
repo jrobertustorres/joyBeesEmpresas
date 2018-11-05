@@ -1,5 +1,5 @@
 export class UsuarioDetalheVagaEntity {
-    
+
       public idUsuario: number;
       public nomePessoa: string;
       public telefonePessoa: string;
@@ -24,7 +24,12 @@ export class UsuarioDetalheVagaEntity {
       public nomeVaga: string;
       public isFinalista: boolean;
 
+      public disponibilidadeMudanca: boolean;
+      public disponibilidadeHoraExtra: boolean;
+      public possuiFilhos: boolean;
+      public idadeFilhoCacula: number;
+
       constructor(){
       }
-    
+
     }

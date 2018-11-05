@@ -34,7 +34,7 @@ export class ModalFiltroPage {
   private _idioma: string;
   private ramoEmpresa: any = [];
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private estadosService: EstadosService,
               private cidadesService: CidadesService,
@@ -65,6 +65,7 @@ export class ModalFiltroPage {
       'idEmpresa': [''],
       'possuiCandidatosEnumFormat': ['']
     });
+    this.filtroForm.controls.idCidade.disable();
   }
 
   ionViewDidLoad() {
@@ -134,6 +135,7 @@ export class ModalFiltroPage {
         .getCidades(idEstado)
         .then((listCidadesResult) => {
           this.cidades = listCidadesResult;
+          this.filtroForm.controls.idCidade.enable();
           this.loadingCidades.dismiss();
         })
         .catch(err => {

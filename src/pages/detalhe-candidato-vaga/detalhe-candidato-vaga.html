@@ -37,15 +37,33 @@
                 <ion-row>
                     <ion-col style="color: #fff">
 
-                        <div>
-                            <ion-icon ios="ios-call" md="md-call"></ion-icon> {{ usuarioDetalheVagaEntity.telefonePessoa }}</div>
+                      <a ion-button clear item-end href="tel:+{{ usuarioDetalheVagaEntity.telefonePessoa }}">
+
+                          <ion-chip style="width: 170px;">
+                              <ion-icon ios="ios-call" md="md-call" style="color: #488aff; background-color: #fff;"></ion-icon>
+                              <ion-label style="line-height: 2.3; color:#fff;"><b> {{ usuarioDetalheVagaEntity.telefonePessoa }} </b></ion-label>
+                          </ion-chip>
+                      </a>
+
+                        <!-- <div>
+                            <ion-icon ios="ios-call" md="md-call"></ion-icon> {{ usuarioDetalheVagaEntity.telefonePessoa }}
+                        </div> -->
                     </ion-col>
                 </ion-row>
-                <ion-row *ngIf="usuarioDetalheVagaEntity.telefonePessoa2">
+                <ion-row *ngIf="usuarioDetalheVagaEntity.telefonePessoa2" style="margin-top: -20px;">
                     <ion-col style="color: #fff">
 
-                        <div>
-                            <ion-icon ios="ios-call" md="md-call"></ion-icon> {{ usuarioDetalheVagaEntity.telefonePessoa2 }}</div>
+                      <a ion-button clear item-end href="tel:+{{ usuarioDetalheVagaEntity.telefonePessoa2 }}">
+
+                          <ion-chip style="width: 170px;">
+                              <ion-icon ios="ios-call" md="md-call" style="color: #488aff; background-color: #fff;"></ion-icon>
+                              <ion-label style="line-height: 2.3; color:#fff;"><b> {{ usuarioDetalheVagaEntity.telefonePessoa2 }} </b></ion-label>
+                          </ion-chip>
+                      </a>
+
+                        <!-- <div>
+                            <ion-icon ios="ios-call" md="md-call"></ion-icon> {{ usuarioDetalheVagaEntity.telefonePessoa2 }}
+                        </div> -->
                     </ion-col>
                 </ion-row>
             </div>
@@ -67,18 +85,27 @@
                 <p>
                     <ion-icon ios="ios-star" md="md-star" class="icon-card-color"></ion-icon> {{ 'IDADE' | translate }}: {{ usuarioDetalheVagaEntity.idade }}</p>
                 <p>
-                    <ion-icon ios="ios-globe" md="md-globe" class="icon-card-color"></ion-icon> {{ 'NACIONALIDADE' | translate }}: {{ usuarioDetalheVagaEntity.nacionalidade }}</p>
+                    <ion-icon ios="md-globe" md="md-globe" class="icon-card-color"></ion-icon> {{ 'NACIONALIDADE' | translate }}: {{ usuarioDetalheVagaEntity.nacionalidade }}</p>
+                <p>
+                    <ion-icon ios="md-map" md="md-map" class="icon-card-color"></ion-icon> {{ 'LABEL_DISP_MUDANCA' | translate }}: {{ usuarioDetalheVagaEntity.disponibilidadeMudanca }}</p>
+                <p>
+                    <ion-icon ios="ios-clock" md="ios-clock" class="icon-card-color"></ion-icon> {{ 'LABEL_DISP_HORA_EXTRA' | translate }}: {{ usuarioDetalheVagaEntity.disponibilidadeHoraExtra }}</p>
+                <p>
+                    <ion-icon ios="md-people" md="md-people" class="icon-card-color"></ion-icon> {{ 'LABEL_POSSUI_FILHOS' | translate }}: {{ usuarioDetalheVagaEntity.possuiFilhos }}</p>
+                <p *ngIf="usuarioDetalheVagaEntity.possuiFilhos == 'Sim'">
+                    <ion-icon ios="md-person" md="md-person" class="icon-card-color"></ion-icon> {{ 'IDADE_FILHO_CACULA' | translate }}: {{ usuarioDetalheVagaEntity.idadeFilhoCacula }}</p>
+
 
                 <div>
                     <hr style="border: 0.1px solid #999;">
                     <p>
                         <ion-icon ios="ios-pin" md="md-pin" class="icon-card-color"></ion-icon> {{ 'ENDERECO' | translate }}: {{ usuarioDetalheVagaEntity.endereco }}</p>
                     <p>
-                        <ion-icon ios="ios-pin" md="md-pin" class="icon-card-color"></ion-icon> {{ 'LABEL_CEP' | translate }}: {{ usuarioDetalheVagaEntity.cep }}</p>
+                        {{ 'LABEL_CEP' | translate }}: {{ usuarioDetalheVagaEntity.cep }}</p>
                     <p>
-                        <ion-icon ios="ios-pin" md="md-pin" class="icon-card-color"></ion-icon> {{ 'PROVINCIA' | translate }}: {{ usuarioDetalheVagaEntity.nomeEstado }}</p>
+                        {{ 'PROVINCIA' | translate }}: {{ usuarioDetalheVagaEntity.nomeEstado }}</p>
                     <p>
-                        <ion-icon ios="ios-pin" md="md-pin" class="icon-card-color"></ion-icon> {{ 'CIDADE' | translate }}: {{ usuarioDetalheVagaEntity.nomeCidade }}</p>
+                        {{ 'CIDADE' | translate }}: {{ usuarioDetalheVagaEntity.nomeCidade }}</p>
                 </div>
 
 
@@ -106,14 +133,20 @@
 <ion-footer *ngIf="!usuarioDetalheVagaEntity.isFinalista && usuarioDetalheVagaEntity.nomePessoa">
     <ion-toolbar>
         <ion-row>
-            <ion-col>
+          <ion-col no-padding>
+              <button no-margin ion-button full icon-end color="navbarColorBlue" (click)="verificaFavoritarCandidatoVaga()">
+                  <span ><b>{{ 'BTN_FINALISTA' | translate }}</b></span>
+                  <ion-icon ios="ios-star" md="md-star"></ion-icon>
+              </button>
+          </ion-col>
+            <!-- <ion-col>
                 <button ion-button clear item-end icon-left color="danger" (click)="verificaDescartarCandidatoVaga()"><ion-icon ios="ios-close" md="md-close"></ion-icon>
                     <strong>{{ 'BTN_DESCARTAR' | translate }}</strong></button>
-            </ion-col>
-            <ion-col>
+            </ion-col> -->
+            <!-- <ion-col>
                 <button ion-button clear item-end icon-left (click)="verificaFavoritarCandidatoVaga()"><ion-icon ios="ios-star" md="md-star"></ion-icon>
                     <strong>{{ 'BTN_FINALISTA' | translate }}</strong></button>
-            </ion-col>
+            </ion-col> -->
         </ion-row>
     </ion-toolbar>
 </ion-footer>

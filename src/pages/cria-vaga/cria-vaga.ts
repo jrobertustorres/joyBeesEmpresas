@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, ToastController, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ToastController, ModalController, Platform } from 'ionic-angular';
 import { Constants } from '../../app/constants';
 import { FormBuilder,	FormGroup, Validators } from '@angular/forms';
 import { DatePicker } from '@ionic-native/date-picker';
@@ -32,7 +32,7 @@ import { availableLanguages, sysOptions } from '../i18n/i18n-constants';
 })
 export class CriaVagaPage {
   @ViewChild(Content) content: Content;
-  
+
   public criaVagaForm: FormGroup;
   private loading = null;
   private loadingText = null;
@@ -49,13 +49,13 @@ export class CriaVagaPage {
   // public dataFinal: Date;
   // private empresas;
 
-  private escondeSalarioMulher: boolean; 
-  private escondeSalarioHomem: boolean; 
+  private escondeSalarioMulher: boolean;
+  private escondeSalarioHomem: boolean;
 
-  private btnManterVaga: string; 
-  private btnEncerrarVaga: string; 
-  private titleEncerrarVaga: string; 
-  private subTitleEncerrarVaga: string; 
+  private btnManterVaga: string;
+  private btnEncerrarVaga: string;
+  private titleEncerrarVaga: string;
+  private subTitleEncerrarVaga: string;
 
   languages = availableLanguages;
   private translate: TranslateService;
@@ -77,11 +77,11 @@ export class CriaVagaPage {
     this.content.scrollToTop();
   }
 
-  constructor(public navCtrl: NavController, 
-              public navParams: NavParams, 
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
               public loadingCtrl: LoadingController,
               public alertCtrl: AlertController,
-              private estadosService: EstadosService, 
+              private estadosService: EstadosService,
               private cidadesService: CidadesService,
               private vagaService: VagaService,
               private formBuilder: FormBuilder,
@@ -90,6 +90,7 @@ export class CriaVagaPage {
               private datePicker: DatePicker,
               private maskMoney: MaskMoneyUtil,
               private ramoEmpresaService: RamoEmpresaService,
+              public platform: Platform,
               private languageTranslateService: LanguageTranslateService,
               translate: TranslateService) {
 
@@ -98,13 +99,17 @@ export class CriaVagaPage {
       this.telaVagasArquivadas = navParams.get('telaVagasArquivadas');
       this.vagaDetalheEntity = new VagaDetalheEntity();
       this.empresaEntity = new EmpresaEntity();
-      
+
     }
 
   ngOnInit() {
-    // this.dataInicial = new Date().toISOString(); //TIRAR DEPOIS
-    // this.dataFinal = new Date().toISOString(); //TIRAR DEPOIS
-    
+
+    //para testes no browser
+    if (!this.platform.is('cordova')) {
+     this.dataInicial = new Date().toISOString();
+     this.dataFinal = new Date().toISOString();
+    }
+
     this.getTraducao();
 
     this.criaVagaForm = this.formBuilder.group({
@@ -117,20 +122,24 @@ export class CriaVagaPage {
       'dataInicial': ['', Validators.required],
       'qtdVaga': ['', Validators.required],
       'salarioHomem': [''],
+      'salarioHomemAte': [''],
       'salarioMulher': [''],
+      'salarioMulherAte': [''],
       'sexoEnum': ['', Validators.required],
       'grauEntendimentoEnum': ['', Validators.required],
       'grauFalaEnum': ['', Validators.required],
       'grauEscritaEnum': ['', Validators.required],
     });
     this.criaVagaForm.controls.idCidade.disable();
+    this.criaVagaForm.controls.dataInicial.disable();
+    this.criaVagaForm.controls.dataFinal.disable();
 
     this.estadosService
       .getEstados()
       .subscribe(dados => {
       this.estados = dados;
     });
-    
+
   }
 
   ionViewDidLoad() {
@@ -179,9 +188,16 @@ export class CriaVagaPage {
   getValorSalarioHomem(v) {
     this.vagaDetalheEntity.salarioHomem = this.maskMoney.maskConvert(v);
   }
+  getValorSalarioHomemAte(v) {
+    this.vagaDetalheEntity.salarioHomemAte = this.maskMoney.maskConvert(v);
+  }
 
   getValorSalarioMulher(v) {
     this.vagaDetalheEntity.salarioMulher = this.maskMoney.maskConvert(v);
+
+  }
+  getValorSalarioMulherAte(v) {
+    this.vagaDetalheEntity.salarioMulherAte = this.maskMoney.maskConvert(v);
   }
 
   getGenero(genero: any) {
@@ -193,7 +209,7 @@ export class CriaVagaPage {
       this.escondeSalarioMulher = true;
       this.escondeSalarioHomem = false;
       this.vagaDetalheEntity.salarioMulher = null;
-    } 
+    }
     if (genero == 'FEMININO' || this.vagaDetalheEntity.sexoEnum == 'FEMININO') {
       this.escondeSalarioMulher = false;
       this.escondeSalarioHomem = true;
@@ -205,15 +221,31 @@ export class CriaVagaPage {
   formataSalario() {
     if(this.vagaDetalheEntity.salarioHomem) {
       let salarioHomem: any = this.vagaDetalheEntity.salarioHomem;
+      //let salarioHomemAte: any = this.vagaDetalheEntity.salarioHomemAte;
       salarioHomem = parseFloat(salarioHomem).toFixed(2);
+      //salarioHomemAte = parseFloat(salarioHomemAte).toFixed(2);
       salarioHomem = salarioHomem.toString().split( /(?=(?:\d{3})+(?:\.|$))/g ).join( "," );
+      //salarioHomemAte = salarioHomemAte.toString().split( /(?=(?:\d{3})+(?:\.|$))/g ).join( "," );
       this.vagaDetalheEntity.salarioHomem = salarioHomem;
+      //this.vagaDetalheEntity.salarioHomemAte = salarioHomemAte;
+    }
+    if(this.vagaDetalheEntity.salarioHomemAte) {
+      let salarioHomemAte: any = this.vagaDetalheEntity.salarioHomemAte;
+      salarioHomemAte = parseFloat(salarioHomemAte).toFixed(2);
+      salarioHomemAte = salarioHomemAte.toString().split( /(?=(?:\d{3})+(?:\.|$))/g ).join( "," );
+      this.vagaDetalheEntity.salarioHomemAte = salarioHomemAte;
     }
     if(this.vagaDetalheEntity.salarioMulher) {
       let salarioMulher: any = this.vagaDetalheEntity.salarioMulher;
       salarioMulher = parseFloat(salarioMulher).toFixed(2);
       salarioMulher = salarioMulher.toString().split( /(?=(?:\d{3})+(?:\.|$))/g ).join( "," );
       this.vagaDetalheEntity.salarioMulher = salarioMulher;
+    }
+    if(this.vagaDetalheEntity.salarioMulherAte) {
+      let salarioMulherAte: any = this.vagaDetalheEntity.salarioMulherAte;
+      salarioMulherAte = parseFloat(salarioMulherAte).toFixed(2);
+      salarioMulherAte = salarioMulherAte.toString().split( /(?=(?:\d{3})+(?:\.|$))/g ).join( "," );
+      this.vagaDetalheEntity.salarioMulherAte = salarioMulherAte;
     }
   }
 
@@ -223,9 +255,9 @@ export class CriaVagaPage {
         content: this.languageDictionary.LOADING_TEXT,
       });
       this.loading.present();
-      
+
       this.vagaDetalheEntity.idVaga = this.idVaga;
-   
+
       this.vagaService.findVagaDetalhe(this.vagaDetalheEntity)
         .then((vagaDetalheEntityResult: VagaDetalheEntity) => {
           this.vagaDetalheEntity = vagaDetalheEntityResult;
@@ -266,7 +298,7 @@ export class CriaVagaPage {
     .then(dataInicial => {
       // this.dataFinalFormat = dataFinal.toISOString();
       this.dataInicial = dataInicial.toISOString();
-      
+
       // this.dataFinal = dataFinal;
     }, (err) => {
     });
@@ -283,7 +315,7 @@ export class CriaVagaPage {
     .then(dataFinal => {
       // this.dataFinalFormat = dataFinal.toISOString();
       this.dataFinal = dataFinal.toISOString();
-      
+
     }, (err) => {
     });
   }
@@ -291,6 +323,11 @@ export class CriaVagaPage {
   submeterVaga() {
 
     if (this.criaVagaForm.valid) {
+      let dataInicial = new Date(this.dataInicial);
+      this.criaVagaForm.value.dataInicial = dataInicial;
+      let dataFinal = new Date(this.dataFinal);
+      this.criaVagaForm.value.dataFinal = dataFinal;
+
       this.loading = this.loadingCtrl.create({
         content: this.languageDictionary.LOADING_TEXT,
       });
@@ -312,11 +349,11 @@ export class CriaVagaPage {
   }
 
   insereVaga() {
-    // this.criaVagaForm.value.salarioHomem = this.criaVagaForm.value.salarioHomem.replace(",", "");
-    // this.criaVagaForm.value.salarioMulher = this.criaVagaForm.value.salarioMulher.replace(",", "");
     this.criarVagaFormat = this.criaVagaForm;
     this.criarVagaFormat.value.salarioHomem = this.criaVagaForm.value.salarioHomem ? this.criaVagaForm.value.salarioHomem.replace(",", "") : null;
     this.criarVagaFormat.value.salarioMulher = this.criaVagaForm.value.salarioMulher ? this.criaVagaForm.value.salarioMulher.replace(",", "") : null;
+    this.criarVagaFormat.value.salarioHomemAte = this.criaVagaForm.value.salarioHomemAte ? this.criaVagaForm.value.salarioHomemAte.replace(",", "") : null;
+    this.criarVagaFormat.value.salarioMulherAte = this.criaVagaForm.value.salarioMulherAte ? this.criaVagaForm.value.salarioMulherAte.replace(",", "") : null;
 
     this.vagaService
     .criaVaga(this.criarVagaFormat.value)
@@ -342,6 +379,8 @@ export class CriaVagaPage {
     this.criarVagaFormat = this.vagaDetalheEntity;
     this.criarVagaFormat.salarioHomem = this.criaVagaForm.value.salarioHomem ? this.criaVagaForm.value.salarioHomem.replace(",", "") : null;
     this.criarVagaFormat.salarioMulher = this.criaVagaForm.value.salarioMulher ? this.criaVagaForm.value.salarioMulher.replace(",", "") : null;
+    this.criarVagaFormat.salarioHomemAte = this.criaVagaForm.value.salarioHomemAte ? this.criaVagaForm.value.salarioHomemAte.replace(",", "") : null;
+    this.criarVagaFormat.salarioMulherAte = this.criaVagaForm.value.salarioMulherAte ? this.criaVagaForm.value.salarioMulherAte.replace(",", "") : null;
 
     this.vagaService
     .alteraVaga(this.criarVagaFormat) //this.criaVagaForm.value

@@ -2,8 +2,9 @@ export class Constants {
 
   //  public static API_ENDPOINT='http://127.0.0.1:6666/api/';
 
-  public static API_URL: string = 'http://localhost:8080/joyBeesMobileService/';
-  // public static API_URL: string = 'http://192.168.1.4:8080/joyBeesMobileService/';
+  // public static API_URL: string = 'http://localhost:8080/joyBeesMobileService/';
+  // public static API_URL: string = 'http://192.168.1.6:8080/joyBeesMobileService/';
+  public static API_URL: string = 'http://107.155.133.177:8190/joyBeesMobileService/';
 
   public static ID_USUARIO = 'id_usuario';
   public static USER_ID_FACEBOOK = 'id_usuario_facebook';
