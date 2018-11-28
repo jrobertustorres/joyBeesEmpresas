@@ -3,8 +3,6 @@ import { IonicModule, Platform, IonicPageModule } from 'ionic-angular';
 
 import { I18nPage } from './i18n';
 
-// import { HomePage } from './home';
-
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { Globalization } from '@ionic-native/globalization';
 

@@ -14,7 +14,6 @@ import { PrincipalPage } from '../pages/principal/principal';
 //I18N
 import { TranslateService } from '@ngx-translate/core';
 import { defaultLanguage, availableLanguages, sysOptions } from '../pages/i18n/i18n-constants';
-
 import { LanguageTranslateService } from '../providers/language-translate-service';
 import { Globalization } from '@ionic-native/globalization';
 
@@ -26,7 +25,7 @@ export class MyApp {
   @ViewChild('baseNav') nav: Nav;
   rootPage:any;
 
-  languages = availableLanguages;
+  // languages = availableLanguages;
   selectedLanguage: any;
   private translate: TranslateService;
   private titleConection: string;

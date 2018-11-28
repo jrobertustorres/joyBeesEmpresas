@@ -17,7 +17,7 @@
         <ion-item>
             <ion-label stacked color="dark">{{ 'EMAIL' | translate }}</ion-label>
             <!-- <ion-input [(ngModel)]="usuarioEntity.login" formControlName="login" type="email" placeholder="Ex.: nome@email.com" spellcheck="false" autocapitalize="off"></ion-input> -->
-            <ion-input formControlName="login" type="email" placeholder="Ex.: {{ 'PLACE_EMAIL' | translate }}" style="font-size: 14px;" spellcheck="false" autocapitalize="off"></ion-input>
+            <ion-input formControlName="login" type="email" placeholder="{{ 'PLACE_EMAIL' | translate }}" style="font-size: 14px;" spellcheck="false" autocapitalize="off"></ion-input>
         </ion-item>
         <div *ngIf="(!loginForm.get('login').valid && loginForm.get('login').touched) && !loginForm.get('login').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'CAMPO_OBRIGATORIO' | translate }}</div>
         <div *ngIf="loginForm.get('login').hasError('pattern')" [ngClass]="'class-error-form'">{{ 'EMAIL_INVALIDO' | translate }}</div>
@@ -37,7 +37,6 @@
     </form>
 
     <div class="forgot-pass-style-div">
-        <!-- <a (click)="teste()" class="botao01">{{ 'ESQUECI_SENHA22' | translate }}</a> -->
         <a (click)="goRecuperarSenha()" class="botao01">{{ 'ESQUECI_SENHA' | translate }}</a>
     </div>
 

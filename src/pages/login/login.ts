@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Constants } from '../../app/constants';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
-// import { RecuperarSenhaPage } from '../recuperar-senha/recuperar-senha';
 import { FormBuilder,	FormGroup, Validators } from '@angular/forms';
 
 //PAGE
 import { PrincipalPage } from '../principal/principal';
-// import { DetalheVagaPage } from './../detalhe-vaga/detalhe-vaga';
 
 //ENTITY
 import { UsuarioEntity } from '../../model/usuario-entity';
@@ -30,9 +28,9 @@ export class LoginPage implements OnInit {
   public loginForm: FormGroup;
   private usuarioEntity: UsuarioEntity;
   private loading = null;
-  languages = availableLanguages;
+  // languages = availableLanguages;
   selectedLanguage: any;
-  private translate: TranslateService;
+  // private translate: TranslateService;
   private loadingText: string;
   private _idioma: string;
   public languageDictionary: any;
@@ -42,10 +40,10 @@ export class LoginPage implements OnInit {
               public alertCtrl: AlertController,
               public loadingCtrl: LoadingController,
               private formBuilder: FormBuilder,
-              private languageTranslateService: LanguageTranslateService,
-              translate: TranslateService) {
+              // translate: TranslateService,
+              private languageTranslateService: LanguageTranslateService) {
 
-    this.translate = translate;
+    // this.translate = translate;
     this.usuarioEntity = new UsuarioEntity();
   }
 

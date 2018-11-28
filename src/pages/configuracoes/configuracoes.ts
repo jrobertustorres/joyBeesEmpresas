@@ -82,19 +82,19 @@ export class ConfiguracoesPage implements OnInit {
     this.languageProvider.getLanguageProvider(this.selectedLanguage);
   }
 
-  presentToast() {
-    let toast = this.toastCtrl.create({
-      message: this.messagePresentToast,
-      duration: 3000,
-      position: 'bottom',
-      cssClass: "toast-success"
-    });
+  // presentToast() {
+  //   let toast = this.toastCtrl.create({
+  //     message: this.messagePresentToast,
+  //     duration: 3000,
+  //     position: 'bottom',
+  //     cssClass: "toast-success"
+  //   });
 
-    toast.onDidDismiss(() => {
-    });
+  //   toast.onDidDismiss(() => {
+  //   });
 
-    toast.present();
-  }
+  //   toast.present();
+  // }
 
   openModalTermos(){
     let modal = this.modalCtrl.create(ModalTermosPage);
@@ -110,13 +110,13 @@ export class ConfiguracoesPage implements OnInit {
     this.navCtrl.push(MinhaSenhaPage);
   }
 
-  showAlertModoCliente() {
-    let alert = this.alertCtrl.create({
-      title: this.titleAlert,
-      subTitle: this.subTitleAlert,
-      buttons: ['OK']
-    });
-    alert.present();
-  }
+  // showAlertModoCliente() {
+  //   let alert = this.alertCtrl.create({
+  //     title: this.titleAlert,
+  //     subTitle: this.subTitleAlert,
+  //     buttons: ['OK']
+  //   });
+  //   alert.present();
+  // }
 
 }

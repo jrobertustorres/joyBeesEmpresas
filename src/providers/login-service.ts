@@ -22,8 +22,7 @@ export class LoginService {
 
   public loginFornecedor(usuarioEntity) {
     try {
-      localStorage.removeItem(Constants.IDIOMA_USUARIO);
-      // this.usuarioEntity = new UsuarioEntity();
+      // localStorage.removeItem(Constants.IDIOMA_USUARIO);
       this.usuarioEntity = usuarioEntity;
       this.usuarioEntity.tokenPush = localStorage.getItem(Constants.TOKEN_PUSH);
       this.usuarioEntity.versaoApp = localStorage.getItem(Constants.VERSION_NUMBER);
@@ -60,7 +59,6 @@ export class LoginService {
 
   public loginByIdService(usuarioEntity) {
     try {
-      // this.usuarioEntity = new UsuarioEntity();
       this.usuarioEntity = usuarioEntity;
       this.usuarioEntity.tokenPush = localStorage.getItem(Constants.TOKEN_PUSH);
       this.usuarioEntity.versaoApp = localStorage.getItem(Constants.VERSION_NUMBER);

@@ -4,6 +4,7 @@ export class PreCadastroEntity {
       public email: string;
       public pessoaContato: string;
       public telefone: string;
+      public preCadastroServico: boolean;
 
       constructor(){
       }

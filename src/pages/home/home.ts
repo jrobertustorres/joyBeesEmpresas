@@ -1,10 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, MenuController, ModalController, LoadingController, AlertController } from 'ionic-angular';
-// import { Constants } from '../../app/constants';
 import { FormBuilder,	FormGroup, Validators } from '@angular/forms';
-
-//PROVIDERS
-import { LanguageProvider } from '../../providers/language-provider';
 
 //PAGES
 import { RecuperarSenhaPage } from '../recuperar-senha/recuperar-senha';
@@ -12,7 +8,6 @@ import { PrincipalPage } from '../principal/principal';
 import { ModalTermosPage } from '../modal-termos/modal-termos';
 
 //SERVICES
-// import { VagaService } from '../../providers/vaga-service';
 import { LoginService } from '../../providers/login-service';
 import { FornecedorService } from '../../providers/fornecedor-service';
 import { LanguageTranslateService } from '../../providers/language-translate-service';
@@ -33,7 +28,6 @@ export class HomePage {
   private usuarioEntity: UsuarioEntity;
   private preCadastroEntity: PreCadastroEntity;
 
-  selectedLanguage = null;
   private loading = null;
   public languageDictionary: any;
 
@@ -45,8 +39,7 @@ export class HomePage {
               private formBuilder: FormBuilder,
               private loginService: LoginService, 
               private fornecedorService: FornecedorService,
-              // private languageProvider: LanguageProvider,
-              private languageTranslateService: LanguageTranslateService, 
+              private languageTranslateService: LanguageTranslateService,
               public modalCtrl: ModalController) {
 
     this.usuarioEntity = new UsuarioEntity();
@@ -148,6 +141,7 @@ export class HomePage {
         this.loading.present();
 
         this.preCadastroEntity = this.cadastrarEmpresaForm.value;
+        this.preCadastroEntity.preCadastroServico = false;
 
         this.fornecedorService.preCadastroFornecedor(this.preCadastroEntity)
           .then((preCadastroEntityResult: PreCadastroEntity) => {

@@ -41,9 +41,9 @@ export class MenuPage implements OnInit{
 
   languages = availableLanguages;
   selectedLanguage: any;
+  public languageDictionary: any;
   private translate: TranslateService;
   private usuarioEntity: UsuarioEntity;
-  public languageDictionary: any;
   private versaoAppEntity: VersaoAppEntity;
 
   private subTitleLogout: string;
@@ -72,11 +72,11 @@ export class MenuPage implements OnInit{
               public loadingCtrl: LoadingController,
               private menuCtrl: MenuController,
               translate: TranslateService,
-              private languageProvider: LanguageProvider,
               public loginService: LoginService,
               public usuarioService: UsuarioService,
               public platform: Platform,
               private versaoAppService: VersaoAppService,
+              private languageProvider: LanguageProvider,
               private languageTranslateService: LanguageTranslateService,
               public actionSheetCtrl: ActionSheetController) {
 
